@@ -141,14 +141,14 @@
 \section{Popis a rozbor problému}
 \noindent
 \large
-Formulace problému je velmi přímočará. V rovině je dána množina bodů, které tvoří vrcholy mnohoúhelníků, a je dán bod q. Cílem je vyřešit tzv. Point Location Problem (PLP), tedy najít takový mnohoúhelník P, který bod q obsahuje. Tento problém je velmi významný, jelikož velice často potřebujeme znát svoji polohu vůči jiným objektům. Přústupů řešení tohoto problému je hned několik a závisí na tvaru polygonu, který může být ve speciálním případě konvexní, ale nejčastěji bývá nekonvexní. \\
+Formulace problému je velmi přímočará. V rovině je dána množina bodů, které tvoří vrcholy mnohoúhelníků, a je dán bod q. Cílem je vyřešit tzv. Point Location Problem (PLP), tedy najít takový mnohoúhelník P, který bod q obsahuje. Tento problém je velmi významný, jelikož velice často potřebujeme znát svoji polohu vůči jiným objektům. Přístupů řešení tohoto problému je hned několik a závisí na tvaru polygonu, který může být ve speciálním případě konvexní, ale nejčastěji bývá nekonvexní. \\
 \indent Mnohoúhelník, který je konvexní, splňuje podmínku, že všechny jeho vnitřní úhly jsou konvexní, tedy musí být menší nebo rovny $180^\circ$. Dále platí, že všechny body na úsečkách, jejichž krajní body leží uvnitř polygonu, jsou také uvnitř polygonu. Další vlastností je, že všechny strany konvexního mnohoúhelníku leží v tzv. opěrné polorovině. U nekonvexního typu toto neplatí, což je zřejmé z obrázku \ref{fig:srovnani_konvex}.
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
 \includegraphics[width=15cm]{pictures/Srovnani-konvex.png} 
-\caption[Srovnání konvexního a konkávního mnohoúhelníku]{Srovnání konvexního a konkávního mnohoúhelníku \cite{srovnani_konvex}}
+\caption[Srovnání konvexního a nekonvexního (konkávního) mnohoúhelníku]{Srovnání konvexního a konkávního mnohoúhelníku \cite{srovnani_konvex}}
 \label{fig:srovnani_konvex}
 \end{center}
 \end{figure}
@@ -164,11 +164,11 @@ Výsledkem testu polohy bodu a mnohoúhelníku může být několik různých vz
 		\item bod q je identický s některým z vrcholů polygonu P.
 \end{itemize}
 
-Pro testování vzájemné polohy bodu vůči polygonu existuje několik metod. V této úloze je naprogramována metoda Ray Crossing Algorithm (varianta s posunem těžiště polygonu) a metoda Winding Number Algorithm.
+Pro testování vzájemné polohy bodu vůči polygonu existuje několik metod. V této úloze je naprogramována metoda Ray Crossing Algorithm (paprskový algoritmus) a metoda Winding Number Algorithm (metoda ovíjení).
 
 \subsection{Údaje o bonusových úlohách}
 \large
-\noindent Kromě implementace výše zmíněných algoritmů pro geometrické vyhledávání bodu nad polygonovou mapou, byl ošetřeno několik singulárních případů. U Winding Number Algorithm byl ošetřen případ, kdy bod leží na hraně polygonu. U obou algoritmů došlo k podchycení případu, kdy bod je totožný s vrcholem jednoho či více polygonů. Pro uvedené singularity bylo provedeno zvýraznění polygonů zelenou barvou. Zároveň byl naprogramován algoritmus pro automatické genererování nekonvexních polygonů. 
+\noindent Kromě implementace výše zmíněných algoritmů pro geometrické vyhledávání bodu nad polygonovou mapou, která je importována z textového souboru, bylo ošetřeno několik singulárních případů. U Winding Number Algorithm byl ošetřen případ, kdy bod leží na hraně polygonu. U obou algoritmů došlo k podchycení případu, kdy bod je totožný s vrcholem jednoho či více polygonů. Pro uvedené singularity bylo provedeno zvýraznění obou (nebo více) společných polygonů zelenou barvou. Zároveň byl naprogramován algoritmus pro automatické genererování nekonvexních polygonů při zadaném počtu vrcholů. 
 
 %% -------<<< 2. KAPITOLA = Popis použitých algoritmů >>>-------\\%%
 
@@ -178,7 +178,7 @@ Pro testování vzájemné polohy bodu vůči polygonu existuje několik metod. 
 \large
 Cílem této úlohy je vytvořit aplikaci, která po zadání příslušného bodu q určí polygon P, do kterého zadaný bod přísluší. Při volbě metody je vždy nutné se zamyslet nad typem vstupních a výstupních dat a nad časovou náročností. \\
 \indent Řešení pro konvexní polygony je nejčastěji realizováno opakovaným testem polohy bodu q vůči každé hraně mnohoúhelníku P (half-plane test) nebo pomocí Ray Crossing Algorithm (paprskovitého algoritmu). Test polohy bodu q vůči hranám mnohoúhelníku P je princip, který ale nelze aplikovat na nekonvexní polygony. \\
-\indent K řešení této úlohy pro nekonvexní algoritmy jsou používány dva algoritmy: paprsový (Ray algorithm) a metoda ovíjení (Winding algorithm). Oba tyto přístupy převádí problém na opakované určení bodu vzhledem k mnohoúhelníku. Rozdílnou technikou řešení planární dělení roviny, což je jiná skupina algoritmů daleko mocnější, ale náročnější na implementaci. Do této skupiny patří například Metoda pásů, Line Sweep Algorithm či metoda trapezoidálních map.
+\indent K řešení této úlohy pro nekonvexní algoritmy jsou používány dva algoritmy: paprsový (Ray algorithm) a metoda ovíjení (Winding algorithm). Oba tyto přístupy převádí problém na opakované určení bodu vzhledem k mnohoúhelníku. Rozdílnou technikou řešení je algoritmus planárního dělení roviny, což je jiná skupina algoritmů daleko mocnější, ale náročnější na implementaci. Do této skupiny patří například Metoda pásů, Line Sweep Algorithm či metoda trapezoidálních map.
 
 \subsection{Ray Crossing Algorithm}
 \large
@@ -200,22 +200,22 @@ Cílem této úlohy je vytvořit aplikaci, která po zadání příslušného bo
 \item pokud je M sudé: bod nenáleží polygonu P $(q { \not\in } P)$ .
 \end{itemize}
 
-\subsubsection{Implementace algoritmu (varianta s redukcí)}
+\subsubsection{Slovní zápis algoritmu (varianta s redukcí)}
 \begin{enumerate}
-\item Nastavení počtu průsečíků rovno nule:  $ intersects = 0 $ 
-\item Redukce souřadnic všech bodů polygonu vůči souřadnicím bodu q (lokální souřadnicový systém (q, x', y'))
-\item Test podmínky:  $if(y'_i > 0)\&\&(y'_{i-1} <= 0)\|(y'_{i-1} > 0)\&\&(y'_{i} <= 0)  $ 
-\item Při splnění podmínky provedení:  $ x'_m = (x'_i y'_{i-1} - x'_{i-1} y'_i ) / (y'_i - y'_{i-1})$ 
-\item Pokud $x'_m > 0$, zvýšení počtu průsečíků o jeden: $ intersects = intersects +1$
-\item Určení, zda je počet průsečíků sudý či lichý: $if (intersect\%2) = 0$, pak: $q\in P$
-\item V opačném případě: $q {\not \in} P$
+\item Nastavení počtu průsečíků rovno nule:  $ intersects = 0$.
+\item Redukce souřadnic všech bodů polygonu vůči souřadnicím bodu q (lokální souřadnicový systém (q, x', y')).
+\item Test podmínky:  $if(y'_i > 0)\&\&(y'_{i-1} <= 0)\|(y'_{i-1} > 0)\&\&(y'_{i} <= 0)$. 
+\item Při splnění podmínky provedení:  $ x'_m = (x'_i y'_{i-1} - x'_{i-1} y'_i ) / (y'_i - y'_{i-1})$. 
+\item Pokud $x'_m > 0$, zvýšení počtu průsečíků o jeden: $ intersects = intersects +1$.
+\item Určení, zda je počet průsečíků sudý či lichý: $if (intersect\%2) = 0$, pak: $q\in P$.
+\item V opačném případě: $q {\not \in} P$.
 \end{enumerate}
 
 \newpage
 \vspace*{-1cm}
 \subsection{Winding Number Algorithm}
 \large
-\noindent Tento algoritmus je také nazýván Metoda ovíjení. Půjdeme postupně po vrcholech polygonu P a budeme sčítat nebo odečítat úhly mezi daným bodem q a vrcholy P (po směru hodinových ručiček přičítáme, proti směru odečítáme). Pokud je výsledný úhel roven 2$\pi$, byl dokončen celý kruh, lze tedy prohlásit, že bod q náleží polygonu P. Pokud je výsledný úhel roven 0, bod q polygonu P nenáleží. Princip Winding algoritmu je zřejmý z obrázku \ref{fig:winding}.
+\noindent Tento algoritmus je také nazýván Metoda ovíjení. Půjdeme postupně po vrcholech polygonu P a budeme sčítat nebo odečítat úhly mezi daným bodem q a vrcholy P (po směru hodinových ručiček přičítáme, proti směru odečítáme). Pokud je výsledný úhel roven 2$\pi$, byl dokončen celý kruh, lze tedy prohlásit, že bod q náleží polygonu P. Pokud je výsledný úhel roven 0, bod q polygonu P nenáleží. Princip Winding algoritmu je zřejmý z obrázku \ref{fig:winding}. Při této mětodě byla uvažována malá tolerance, jelikož je pravděpodobné, že výsledný úhel není roven přesně 2$\pi$ nebo 0.
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
@@ -233,7 +233,8 @@ $$
 $$.
 
 \noindent Platí, že pokud je úhel $\sphericalangle p_i, q, p_{i+1}$ orientován ve směru hodinových ručiček, pak $\omega_i > 0$.
-Naopak pokud je úhel $\sphericalangle p_i, q, p_{i+1}$ orientován proti směru hodinových ručiček, pak $\omega_i < 0$. V závislosti na výsledné hodnotě $\Omega$ lze rozhodnout o poloze bodu q vůči polygonu P:
+Naopak pokud je úhel $\sphericalangle p_i, q, p_{i+1}$ orientován proti směru hodinových ručiček, pak $\omega_i < 0$.
+V závislosti na výsledné hodnotě $\Omega$ lze rozhodnout o poloze bodu q vůči polygonu P:
 
 \begin{itemize}
 \item pokud je $\Omega = 1$, platí $q \in P$, 
@@ -242,27 +243,26 @@ Naopak pokud je úhel $\sphericalangle p_i, q, p_{i+1}$ orientován proti směru
 
 \newpage
 \vspace*{-1cm}
-\subsubsection{Implementace metody}
+\subsubsection{Slovní zápis algoritmu}
 \begin{enumerate}
-\item Nastavení výchozího úhlu $\omega = 0$ , volba tolerance $\epsilon$ : $\omega = 0, \epsilon = 1e-6$
-\item Určení úhlu: $\omega_i = \sphericalangle p_i, q, p_{i+1}$
-\item Určení orientace $o_i$ bodu q ke straně $p_i, p_{i+1}$
-\item Volba podmínky - pokud bod vlevo: $\omega = \omega + \omega_i$, v opačném případě: $\omega = \omega - \omega_i$
-\item Volba podmínky - pokud rozdíl: $|(|\omega| - 2\pi)| < \epsilon$, pak platí: $q \in P$, v opačném případě:  $ q { \not \in } P $
+\item Nastavení výchozího úhlu $\omega = 0$ , volba tolerance $\epsilon = 1e-6$.
+\item Určení úhlu: $\omega_i = \sphericalangle p_i, q, p_{i+1}$.
+\item Určení orientace $o_i$ bodu q ke straně $p_i, p_{i+1}$.
+\item Volba podmínky - pokud bod vlevo: $\omega = \omega + \omega_i$, v opačném případě: $\omega = \omega - \omega_i$.
+\item Volba podmínky - pokud rozdíl: $|(|\omega| - 2\pi)| < \epsilon$, pak platí: $q \in P$, v opačném případě:  $ q { \not \in } P $.
 \end{enumerate}
 
 \subsection{Generování nekonvexního polygonu}
 Uživatel si nejprve zadá počet vrcholů polygonu, jež bude poté automaticky vygenerován. Pokud zvolí počet vrcholů 1,2 nebo 3 je zobrazena chybová hláška. Počet vrcholů polygonu musí být nejméně 4, aby mohl být výsledný obrazec nekonvexní. 
-Souřadnice náhodných bodů jsou redukovány pomocí funkce modulo, aby bylo zajištěno zobrazení bodů ve vykreslovacím widgetu.\\
-\indent Uvnitř kódu je náhodně generováno (n - 1) bodů, jelikož jako n-tý bod je vygenerován střed všech vygenerovaných bodů. Od tohoto cetrálního bodu jsou poté vypočteny směrníky na všechny další body, díky čemuž mohly být body v polygonu seřazeny ve směru hodinových ručiček. Díky výpočtu směrníku je výsledný polygon topologicky korektní, ale je nutné brát ohled na kvadranty arcus tangens.
+Souřadnice náhodných bodů jsou redukovány pomocí funkce modulo, aby bylo zajištěno zobrazení bodů ve vykreslovacím widgetu. Uvnitř kódu je náhodně generováno (n - 1) bodů, jelikož jako n-tý bod je vygenerován střed všech vygenerovaných bodů. Od tohoto cetrálního bodu jsou poté vypočteny směrníky na všechny další body. Je samozřejmě nutné brát ohled na kvadranty arcus tangens. Podle velikosti směrníků jsou dále body v polygonu seřazeny ve směru hodinových ručiček. Důležitým zjištěním je fakt, že díky centrální bod je viditelný z každého vrcholu polygonu. Lze tedy říci, že výsledný polygon je tzv. star-shaped polygon.
 
-\subsubsection{Implementace metody}
+\subsubsection{Slovní zápis algoritmu}
 \begin{enumerate}
 \item Náhodné vygenerování (n-1) bodů:  $x_{pi} = rand \% 1000; y_{pi} = rand \% 600$.
-\item Vygenerování centrálního bodu jakožto průměru z již vygenerovaných souřadnic bodů.
-\item Výpočet směrníků z centrálního bodu na jednotlivé body v závislosti na osách daného zobrazovacího okna.
-\item Určení kvadrantu a správný přepočet úhlu.
-\item Seřazení bodů v polygonu ve směru hodinových ručiček, tedy od nejmenšího směrníku.
+\item Vygenerování centrálního bodu, jehož souřadnice jsou průměrem z již vygenerovaných souřadnic (n-1) bodů.
+\item Výpočet směrníků z centrálního bodu na jednotlivé body v závislosti na osách daného zobrazovacího widgetu.
+\item Určení kvadrantu a správný přepočet úhlu s ohledem na arcus tangens.
+\item Seřazení bodů v polygonu CW, tedy od nejmenšího směrníku.
 \end{enumerate}
 
 %% -------<<< 3. KAPITOLKA = Problematické situace a jejich rozbor >>>-------\\%%
@@ -272,23 +272,13 @@ Souřadnice náhodných bodů jsou redukovány pomocí funkce modulo, aby bylo z
 \section{Problematické situace a jejich rozbor}
 \subsection{Ray Crossing Algorithm}
 \large
-Při programování tohoto algoritmu bylo řešeno několik problematických situací, tzv. singularit. K singularitě zde může dojít tehdy, pokud bod leží na hraně polygonu či pokud je bod identický s některým z vrcholů polygonu. Z tohoto důvodu se využívá upravená varianta Ray Crossing Algorithm, kdy je nejprve provedena redukce souřadnic bodů polygonu k zájmovému bodu a dále se testuje souřadnice y vybraného bodu polygonu a bodu předcházejícího. Počítají se pouze průsečíky M ležící v 1. kvadrantu upraveného souřadnicového systému, tedy souřadnice x bodu M musí být kladná. Problematické singulární situace můžeme vyjádřit následovně:
-\begin{itemize}
-\item Bod q je totožný s vrcholem polygonu P:  $  q [x_q, y_q] = p_i [x_i, y_i] $ 
-\item Bod q leží na některé z hran AB polygonu P:   $  q \in \overrightarrow{AB} $ 
-\end{itemize}
-
-\noindent První případ byl ošetřen porovnáním souřadnic bodu q a souřadnic bodu polygonu (tolerance totožnosti byla zvolena 1e-6). Druhý případ byl ošetřen pomocí funkce getPointLinePosition. Pokud bod náležel hraně polygonu či se nalézal ve vrcholu polygonu, byla návratová hodnota rovna -1. V takovém případě byl bod q vyhodnocen, že se v polygonu P nachází.
+Při programování tohoto algoritmu bylo řešeno několik problematických situací, tzv. singularit. K singularitě zde může dojít tehdy, pokud bod leží na hraně polygonu či pokud je bod identický s některým z vrcholů polygonu. \\
+\indent První případ singularity, kdy bod je identický s vrcholem polygonu, byl ošetřenve funkci getPointLinePosition porovnáním souřadnic bodu q a souřadnic bodu polygonu (tolerance totožnosti byla zvolena 1e-3). Druhý případ, kdy bod leží na hraně polygonu, byl ošetřen také pomocí funkce getPointLinePosition. Pokud bod náležel hraně polygonu či se nalézal ve vrcholu polygonu, byla návratová hodnota rovna funkce getPointLinePosition -2. V takovém případě byl bod q vyhodnocen, že se v polygonu P nachází. Tedy návratová hodnota funkce Ray Crossing je v takovém případě rovna 1.\\
+\indent Dále může nastat problém, že paprsek r prochází hranou polygonu, tedy není možné v této části jednoznačně určit průsečík. Z tohoto důvodu se využívá upravená varianta Ray Crossing Algorithm, kdy je nejprve provedena redukce souřadnic bodů polygonu k zájmovému bodu (lokální souřadnicový systém) a dále se testuje souřadnice y vybraného bodu polygonu a bodu předcházejícího. Počítají se pouze průsečíky M ležící v 1. kvadrantu upraveného souřadnicového systému, tedy souřadnice x bodu M musí být kladná.
 
 \subsection{Winding Number Algorithm}
 \large
-K singulárním případům dochází pouze v případě, že $q \approx p_i$, tedy v případě že zájmový bod je téměř identický s některým z vrcholů polygonu. Pokud tomu nastane, vyhodnotí se funkce tak, že bod leží v obou polygonech. Problematické singulární situaci můžeme vyjádřit následovně:
-
-\begin{itemize}
-\item Bod q je totožný s vrcholem polygonu P:  $  q [x_q, y_q] \approx p_i [x_i, y_i] $ 
-\end{itemize}
-
-\noindent Tento případ byl ošetřen porovnáním souřadnic bodu q a souřadnic bodu polygonu (tolerance totožnosti byla zvolena 1e-6).
+Nevýhodou této metody je její vyšší výpočetní náročnost než u Ray Crossing algoritmu. Nicméně výhodou je, že k singulárním případům dochází pouze v případěch, kdy $q \approx p_i$, tedy pokud zájmový bod splývá s některým z vrcholů polygonu, nebo pokud zájmový bod leží na hraně polygonu. Oba případy byly ošetřeny obdobně jako u výše popsaného Ray Crossing algoritmu rovnou při testu u funkce getPointLinePosition. Pokud dojde k některému z výše uvedených případů, oba dva sousední polygony budou vybarveny, jelikož bod q leží na hraně těchto polygonů. Může být vybarveno i více polygonů v případě, že bod q leží ve vrcholu, který náleží vícero polygonům.
 
 %% -------<<< 4. KAPITOLA = Vstupní  data >>>-------\\%%
 \newpage
@@ -300,12 +290,12 @@ Vstupní data tvoří analyzovaný bod q a textový soubor s body jednotlivých 
 \begin{itemize}
 \item Bod q je vložen uživatelem po ztisknutí tlačítka v grafickém okně aplikace.
 \item Souvislá mapa polygonů je ve formátu txt a obsahuje body jednotlivých polygonů. Má strukturu
-[číslo bodu, souřadnice X, souřadnice Y]. Soubor je seřazen od bodu č. 1 po n-tý bod polygonu. Jednotlivé body se nejprve uloží do proměnné typu QPointF a následně do proměnné polygonu QPolygonF. Jednotlivé polygony se poté uloží do proměnné typu <std::vector>QPolygonF.
+[číslo bodu, souřadnice X, souřadnice Y]. Soubor je seřazen od bodu č. 1 po n-tý bod polygonu. Jednotlivé body se nejprve uloží do proměnné typu QPointF a následně do proměnné polygonu QPolygonF. Jednotlivé polygony se poté uloží do proměnné typu $<$std::vector$>$QPolygonF.
 \end{itemize}
 
 %% -------<<< 2. KAPITOLA = Výstupní data >>>-------\\%%
 \section{Výstupní data}
-Hlavním výstupem této úlohy je grafická aplikace, která umožňuje nahrání textového souboru s body polygonů a následné zobrazení těchto bodů a mnohoúhelníků. Zároveň je možné v aplikaci určit polohu bodu v rámci polygonu pomocí dvou různých metod - Winding algorithm a Ray Crossing algorithm. Dálším výstupem je zelené vyznačení toho polygonu, kterému bod q náleží. V rámci bonusové úlohy lze mezi výstupy zařadit i automatické vygenerování polygonu, který by měl splňovat podmínky nekonvexního mnohoúhelníku. 
+Hlavním výstupem této úlohy je grafická aplikace, která umožňuje nahrání textového souboru s body polygonů a následné zobrazení těchto bodů a mnohoúhelníků. Zároveň je možné v aplikaci určit polohu bodu v rámci polygonu pomocí dvou různých metod - Winding algorithm a Ray Crossing algorithm. Dálším výstupem je zelené vyznačení toho polygonu, kterému bod q náleží a ošetření singularit, kdy bod náleží hraně nebo je identický s bodem polygonu. Zmíněné analýzy lze uplatnit také na automaticky vygenerováný nekonvexní polygon.
 \\
 
 %% -------<<< 3. KAPITOLA = Ukázka aplikace >>>-------\\%%
@@ -415,13 +405,16 @@ Třída Algorithms obsahuje konstruktor a další čtyři metody, které jsou ur
 Jedná se o funkci, která vypočítá polohu bodu vůči polygonu využitím Ray Crossing Algorithm (paprskového algoritmu). Do funkce vstupuje určovaný bod \textit{q} a polygon \textit{P}, vůči kterému je poloha zjišťována. V případě, že výsledná hodnota funkce je rovna \textit{1}, znamená to, že bod leží v polygonu, případně na hraně či vrcholu polygonu -- singulární případy jsou ošetřeny pomocí funkce getPointLinePosition. V ostatních případech leží bod mimo polygon.\\
 
 \noindent\textbf{int positionPointPolygonWinding(QPointF q, QPolygonF pol)}\\
-Tato funkce určí polohu bodu vůči polygonu metodou Winding Number Algorithm. Vstupem je určovaný bod \textit{q} a polygon \textit{P}, vůči kterému je poloha určována. Hned na počátku je také zvolena tolerance (minimální hodnota) \textit{eps = 1e-6}. V případě, že výstupem je číslo \textit{0}, bod leží mimo polygon, v případě že \textit{1}, bod leží uvnitř polygonu. Pokud nenastane žádná z těchto uvedených možností, výstupem je hodnota \textit{-1}. Ve funkci je mimo jiné ošetřena singularita, která může nastat v případě, že bod leží na hraně či ve vrcholu. Pokud je výstupem číslo rovno \textit{1}, znamená to, že bod \textit{q} buď leží v některém z vrcholů polygonu \textit{P}, nebo leží na hraně polygonu, což je kontrolováno funkcí getPointLinePosition. \\
+Tato funkce určí polohu bodu vůči polygonu metodou Winding Number Algorithm. Vstupem je určovaný bod \textit{q} a polygon \textit{P}, vůči kterému je poloha určována. Hned na počátku je také zvolena tolerance (minimální hodnota) \textit{eps = 1e-3}. V případě, že výstupem je číslo \textit{0}, bod leží mimo polygon, v případě že \textit{1}, bod leží uvnitř polygonu. Pokud nenastane žádná z těchto uvedených možností, výstupem je hodnota \textit{-1}. Ve funkci je mimo jiné ošetřena singularita, která může nastat v případě, že bod leží na hraně či ve vrcholu. Pokud je výstupem číslo rovno \textit{1}, znamená to, že bod \textit{q} buď leží v některém z vrcholů polygonu \textit{P}, nebo leží na hraně polygonu, což je kontrolováno funkcí getPointLinePosition. \\
 
 \noindent\textbf{int getPointLinePosition(QPointF q, QPointF p1, QPointF p2)}\\
-Tato funkce má za úkol určit polohu bodu \textit{q} vůči přímce zadané dvěma body \textit{p1} a \textit{p2}. Z vypočtených vektorů určíme determinant, jehož velikost je stěžejší pro správné určení polohy bodu \textit{q}.  Aby bylo možné s menším rozptylem definovat situaci, kdy bod leží přímo na přímce, byla inicializována tolerance (minimální hodnota) \textit{eps = 1e-6}. Pokud je determinant větší než tato tolerance, bod se nechází v levé polorovině a funkce vrací hodnotu \textit{1}. Pokud je menší, bod se nachází v pravé polorovině a funkce vrací hodnotu \textit{0}.  Pokud nenastane ani jeden z výše uvedených případů, znamená to, že bod leží blízko hrany a výstupem je hodnota \textit{-1}.\\
+Tato funkce má za úkol určit polohu bodu \textit{q} vůči přímce zadané dvěma body \textit{p1} a \textit{p2}. Nejprve byly ve funkci ošetřeny singulární případy. Pomocí funkce Length2Points byly vypočteny dílčí vzdálenosti \textit{p1q}, \textit{p2q} a \textit{p1p2}. Pokud rozdíl v absolutní hodnotě vzdálenosti \textit{p1p2} a součtu vzdáleností \textit{p1q}, \textit{p2q} je menší než stanovená tolerance (zvolena 1e-1), bod se nachází blízko hrany a funkce vrací hodnotu -2. Dále se kontroluje, zda bod \textit{q} nesplývá s bodem \textit{p1} nebo\textit{ p2}, pokud ano, je rovněž vrácena hodnota -2. Teprve poté se z vektorů vypočítá determinant. Pokud je determinant větší než tato tolerance, bod se nechází v levé polorovině a funkce vrací hodnotu \textit{1}. Pokud je menší, bod se nachází v pravé polorovině a funkce vrací hodnotu \textit{0}.  Pokud nenastane ani jeden z výše uvedených případů, výstupem je hodnota \textit{-1}.\\
 
-\noindent\textbf{double getAngle2Vectors(QPointF p1,QPointF p2,QPointF p3, \\ QPointF p4)}\\
-V této funkci je pomocí norem a skalárního součinu počítán úhel mezi dvěma hranami zadanými čtyřmi body typu QPoint. Úhel je vypočten jako arcus cosinus poměru skalárního součinu a součinu obou velikostí. Defaultně se v prostředí počítá v radiánech, což bylo ponecháno.
+\noindent\textbf{double length2Points(QPointF p, QPointF q)}\\
+Vrací vzdálenost dvou bodů vypočtenou z Pythagorovy věty.\\
+
+\noindent\textbf{double getAngle2Vectors(QPointF p1, QPointF p2, QPointF p3, \\ QPointF p4)}\\
+V této funkci je pomocí norem a skalárního součinu počítán úhel mezi dvěma hranami zadanými čtyřmi body typu QPointF. Úhel je vypočten jako arcus cosinus poměru skalárního součinu a součinu obou velikostí. Defaultně se v prostředí počítá v radiánech, což bylo ponecháno.
 
 \newpage
 \vspace*{-1cm}
@@ -429,19 +422,19 @@ V této funkci je pomocí norem a skalárního součinu počítán úhel mezi dv
 Třída Draw dědí od třídy QWidget. Je v ní obsaženo několik metod a také kontruktor, který nastavuje počáteční kursor mimo kreslící okno.\\
 
 \noindent\textbf{void setDrawMode}\\
-Po spuštění aplikace je nutné stisknout tlačítko Draw Point pro vykreslení bodu. V případě, že se stiskne tlačítko znovu, je přivolána funkce k tvorbě polygonu. Další možností je importovat polygony ze souboru nebo automaticky generovat náhodné polygonu o předem vybraném počtu vrcholů.\\
+Po spuštění aplikace je nutné stisknout tlačítko Draw Point pro vykreslení bodu. V případě, že se stiskne tlačítko znovu, je přivolána funkce k tvorbě polygonu. Další možností je importovat polygony ze souboru nebo automaticky generovat náhodné polygony o předem vybraném počtu vrcholů.\\
 
 \noindent\textbf{void mousePressEvent}\\
-V této funkci je v závislosti na hodnotě textit{draw\_mode} vykreslen buď nový bod \textit{q}, nebo nový bod polygonu \textit{P}.\\
+V této funkci je v závislosti na hodnotě \textit{draw\_mode} vykreslen buď nový bod \textit{q}, nebo je možné nakreslit ručně body polygonu \textit{P}.\\
 
 \noindent\textbf{void paintEvent}\\
 Tato metoda slouží k vykreslení bodu q. Zároveň jsou díky této metodě vykresleny naimportované polygony nebo nakreslený polygon. V metodě je také naprogramováno zvýraznění polygonu, pokud bod \textit{q} leží uvnitř, případně na hraně či ve vrcholu polygonu \textit{P}.\\
 
 \noindent\textbf{void setResult}\\
-Metoda, která výsledek analýzy vytvořený po kliknutí na tlačítko Analyze ve třídě Widget, udělá viditelný i pro třídu Draw.
+Metoda, která výsledek analýzy vytvořený po kliknutí na tlačítko Analyze ve třídě Widget, udělá viditelný i pro třídu Draw.\\
 
 \noindent\textbf{void clearCanvas}\\
-Metoda slouží k vymazání všech polygonů i bodu q a k překreslení. Volá se před automatickým generováním polygonu. \\
+Metoda sloužící k vymazání všech polygonů i bodu q a k překreslení. Volá se před automatickým generováním polygonu \textit{P}. \\
 
 \noindent\textbf{bool importPolygons(std::string \&path)}\\
 Tato funkce slouží k importu textového souboru, ve kterém se nachází body polygonů. Struktura textového souboru je blíže popsána v kapitole Vstupní data. Při importu souřadnic se uživateli zobrazí dialogové okno, které informuje o úspěšném načtení, případně o chybě.\\
@@ -452,10 +445,10 @@ Tato funkce slouží k importu textového souboru, ve kterém se nachází body 
 Pomocí této metody může uživatel vytvořit nekonvexní mnohoúhelník, který pak dále může analyzovat. V případě, že není dodržen limit vstupních hodnot, zobrazí se Message Window, které upozorňuje na chybné vložení dat.\\
 
 \noindent\textbf{QPointF getPoint}\\
-Metoda, která vrací privátní člen \textit{q} třídy Draw.\\
+Metoda, která vrací privátní bod \textit{q} třídy Draw.\\
 
 \noindent\textbf{QPointF getPolygon}\\
-Metoda, která vrací privátní člen \textit{P} třídy Draw.\\
+Metoda, která vrací privátní polygon \textit{P} třídy Draw.\\
 
 \noindent\textbf{QPointF getPolygons}\\
 Metoda, která vrací privátní vektor polygonů \textit{P} třídy Draw.
@@ -465,7 +458,7 @@ Metoda, která vrací privátní vektor polygonů \textit{P} třídy Draw.
 Díky této funkci se vyčistí okno aplikace.  V aplikaci je funkce implementována tlačítkem Clear.\\
 
 \noindent\textbf{void on\_drawMode\_clicked}\\
-Touto funkcí se volá metoda setDrawMode, která je implementována ve třídě Draw. V aplikace se funkce nalézá pod tlačítkem Draw Points. \\
+Touto funkcí se volá metoda setDrawMode, která je implementována ve třídě Draw. V aplikace se funkce nalézá pod tlačítkem Draw Points\\Polygons. \\
 
 \noindent\textbf{void on\_analyze\_clicked}\\
 Tato metoda zavolá vybraný algoritmus a zobrazí, zda se bod nachází v polygonu, případně na jeho hraně či v jeho vrcholu.\\
@@ -480,10 +473,10 @@ Při stisknutí tlačítka Generate nonconvex polygon je touto funkcí přivolá
 \vspace*{-1cm}
 \subsection{Popis bonusových úloh}
 \noindent\textbf{Ošetření singulárního případu u Winding Number Algorithm, kdy bod leží na hraně polygonu}\\
-Ve funkci positionPointPolygonWinding je určována pozice bodu vůči linii funkcí getPointLinePosition. V této funkci je poté vypočtena vzdálenost určovaného bodu q od obou bodů linie. V případě, že rozdíl vzdálenosti p1p2 a součtu vzdálenosti Qp1 a Qp2 je téměř nulový, můžeme říci, že bod leží na přímce.  Pro tento případ byla tolerance rozdílu obou vzdáleností volena vyšší než ostatní tolerance (e = 2).\\
+Ve funkci positionPointPolygonWinding je určována pozice bodu vůči linii funkcí getPointLinePosition, ve které je vypočtena vzdálenost určovaného bodu \textit{q} od obou bodů linie. V případě, že rozdíl vzdálenosti \textit{p1p2} a součtu vzdálenosti \textit{qp1} a \textit{qp2} je téměř nulový, můžeme říci, že bod leží na přímce.  Pro tento případ byla tolerance rozdílu obou vzdáleností volena vyšší než ostatní tolerance (e = 1e-1).\\
 
 \noindent\textbf{Ošetření singulárního případu u obou metod, kdy je bod totožný s vrcholem dvou a více polygonů}\\
-Ve funkci positionPointPolygonWinding je na začátku kódu ošetřeno, zda vyhledávaný bod \textit{q} není totožný s některým z vrcholů polygonu. Pokud je rozdíl menší než zvolená mezní hodnota, je funkce vyhodnocena tak, že bod leží uvnitř testovaného polygonu. Podobně je tento případ řešen u Ray Crossing algoritmu.\\
+Ve funkci positionPointPolygonWinding je na začátku ošetřeno, zda vyhledávaný bod \textit{q} není totožný s některým z vrcholů polygonu. Pokud je rozdíl menší než zvolená mezní hodnota, je funkce vyhodnocena tak, že bod leží uvnitř testovaného polygonu. Podobně je tento případ řešen u Ray Crossing algoritmu.\\
 
 \noindent\textbf{Zvýraznění všech polygonů pro oba výše uvedené singulární případy}\\
 Pokud uživatel zadá více polygonů, jsou analyzovány pomocí for cyklu. Ty polygony, u kterých je splněna podmínka, že leží uvnitř polygonu, jsou zvýrazněny zelenou barvou. Pokud tedy bod leží přesně na hraně dvou polygonů, zvýrazněny jsou oba polygony.\\

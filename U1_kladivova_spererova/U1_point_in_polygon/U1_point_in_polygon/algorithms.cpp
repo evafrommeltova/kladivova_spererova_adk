@@ -11,7 +11,26 @@ int Algorithms::getPointLinePosition(QPointF &q,QPointF &p1,QPointF &p2)
 //Analyze point and line position
 //1 point in the left half plane
 //0 point in the right half plane
-//-1 point on the line
+//-2 point on the edge or vertex of polygon
+
+//Check singularity when point q is very near or on the edge of polygon
+double tol = 1.0e-1;
+double p1p2 = length2Points(p1, p2);
+double p1q = length2Points(p1, q);
+double p2q = length2Points(p2, q);
+if (fabs(p1p2 -(p1q+p2q)) < tol)
+   return -2;
+
+//Tolerance
+double eps = 1.0e-3;
+
+//Check singularity when point q is very near to vertex
+if( fabs(q.x()-p1.x())<eps && fabs(q.y()-p1.y())<eps ){
+    return -2;
+}
+if( fabs(q.x()-p2.x())<eps && fabs(q.y()-p2.y())<eps ){
+    return -2;
+}
 
 //Vectors
 double ux = p2.x() - p1.x();
@@ -25,22 +44,12 @@ double t = ux * vy - uy * vx;
 //Point in the left half plane
 if (t>0)
     return 1;
+
+//Point in the right half plane
 if (t<0)
     return 0;
-
-//Point on the line
-//distance between point q, a, b
-double eps2 = 2.0;
-double dist_qp1 = sqrt((vx*vx)+(vy*vy));
-double dist_qp2 = sqrt((q.x()-p2.x())*(q.x()-p2.x()) + (q.y()-p2.y())*(q.y()-p2.y()));
-double dist_p1p2 = sqrt((ux*ux)+(uy*uy));
-double dist = dist_qp1 + dist_qp2;
-
-if((fabs(dist-dist_p1p2))<=eps2){
-    return -2;
-}
-
-return -1;
+else
+    return -1;
 }
 
 double Algorithms::getAngle2Vectors(QPointF &p1, QPointF &p2, QPointF &p3, QPointF &p4)
@@ -71,7 +80,7 @@ int Algorithms::positionPointPolygonWinding(QPointF &q, QPolygonF &pol)
     double wn = 0.0;
 
     //Tolerance
-    double eps = 1.0e-6;
+    double eps = 1.0e-3;
 
     //Size of polygon
     int n = pol.size();
@@ -79,29 +88,23 @@ int Algorithms::positionPointPolygonWinding(QPointF &q, QPolygonF &pol)
     //Browse all points of polygon
     for (int i = 0; i < n; i++){
 
-        // check singularity point effect on the vertex
-        if( fabs(q.x()-pol[i%n].x())<eps && fabs(q.y()-pol[i%n].y())<eps ){
+        //Get orientation of the point and the polygon edge
+        int orient = getPointLinePosition(q, pol[i%n], pol[(i+1)%n]);
+
+        //Point q is on the edge, it belongs to polygon
+        if(orient==-2)
             return 1;
-        }
-        else{
-            //Measure angle
-            double omega = getAngle2Vectors(pol[i%n], q, pol[(i+1)%n], q);
 
-            //Get orientation of the point and the polygon edge
-            int orient = getPointLinePosition(q, pol[i%n], pol[(i+1)%n]);
+        //Measure angle
+        double omega = getAngle2Vectors(pol[i%n], q, pol[(i+1)%n], q);
 
-            // q point on the line
-            if(orient==-2)
-                return 1;
+        //Point in the left half plane
+        if (orient == 1)
+            wn += omega;
 
-            //Point in the left half plane
-            if (orient == 1)
-                wn += omega;
-
-            //Point in the right half plane
-            else
-                wn -= omega;
-           }
+        //Point in the right half plane
+        else
+            wn -= omega;
     }
 
     //Point inside polygon
@@ -112,7 +115,7 @@ int Algorithms::positionPointPolygonWinding(QPointF &q, QPolygonF &pol)
     if (fabs(wn) < eps)
         return 0;
 
-    //something else ???
+    //something else???
     else
         return -1;
 }
@@ -126,7 +129,7 @@ int Algorithms::positionPointPolygonRayCrossing(QPointF &q, QPolygonF &pol)
     int n = pol.size();
 
     //Tolerance
-    double eps = 1.0e-6;
+    double eps = 1.0e-3;
 
     //Reduce first point
     double xir = pol[0].x() - q.x();
@@ -138,14 +141,10 @@ int Algorithms::positionPointPolygonRayCrossing(QPointF &q, QPolygonF &pol)
         double xiir = pol[i%n].x() - q.x();
         double yiir = pol[i%n].y() - q.y();
 
-        //Point q on the polygon vertex
-        if((fabs(q.x()-pol[i%n].x()) < eps) && (fabs(q.y()-pol[i%n].y()) < eps)){
-            return 1;
-        }
-
         //Find out if point lies on the line
         int t = getPointLinePosition(q, pol[i%n], pol[(i+1)%n]);
 
+        //Point q is on the edge, it belongs to polygon
         if(t == -2){
             return 1;
         }
