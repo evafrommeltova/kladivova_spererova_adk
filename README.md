@@ -1,5 +1,5 @@
 # kladivova_spererova_adk
-Repozitář k předmětu Algoritmy digitálníkartografie a GIS
+Repozitář k předmětu Algoritmy digitální kartografie a GIS
 
 Úloha 1: Geometrické vyhledávání bodu:
 Výsledná aplikace má několik funkcionalit. 
