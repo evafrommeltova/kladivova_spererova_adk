@@ -8,7 +8,7 @@ Stejně tak dokáže stiknutím tlačítka Import polygons importovat soubor se 
 tyto polygony pak vůči zadanému bodu analyzovat. Další variantou získání polygonu je automatické vygenerování polygonu, 
 který může být dále také analyzován vůči vybranému bodu. 
 
-Úloha 1: Konvexní obálky:
+Úloha 2: Konvexní obálky:
 V rámci úlohy byla vytvořena aplikace, která je schopna na vygenerovaných bodech zkontruovat konvexní obálku, a to hned několika metodami. Zároveň je možné v rámci aplikace generovat 6 různých typů množin. Součástí úlohy je i testování doby výpočtu algoritmů pro různé typy vstupních množin. 
 
 Úloha 3: Digitální model terénu a jeho analýzy:
