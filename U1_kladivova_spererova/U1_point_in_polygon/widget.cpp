@@ -71,6 +71,11 @@ void Widget::on_importPolygons_clicked()
 void Widget::on_generatePolygon_clicked()
 {
     bool b = 0;
-    ui->Canvas->generatePolygon(ui->n_points->text().toInt(&b));
+
+    //Get window size
+    int width = ui -> Canvas -> size().width();
+    int height = ui -> Canvas -> size().height();
+
+    ui->Canvas->generatePolygon(ui->n_points->text().toInt(&b), width, height);
     ui->Canvas->repaint();
 }

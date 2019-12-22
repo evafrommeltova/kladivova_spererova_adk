@@ -4,9 +4,11 @@
 #include <fstream>
 #include <string.h>
 #include "draw.h"
-#include "algorithms.h"
+#include "sortbyy.h"
+#include "sortbyx.h"
+#include "sortbyangle.h"
 #include "qdebug.h"
-
+#include "algorithms.h"
 
 Draw::Draw(QWidget *parent) : QWidget(parent)
 {
@@ -24,12 +26,6 @@ void Draw::mousePressEvent(QMouseEvent *e)
     //Get coordinates od the mouse
     int x = e->x();
     int y = e->y();
-
-    /* if(polygons.empty() == FALSE)
-    {
-        polygons.clear();;
-    } */
-
 
     //Add points to polygon
     if (draw_mode)
@@ -49,6 +45,7 @@ void Draw::mousePressEvent(QMouseEvent *e)
     }
 
     polygons.push_back(polygon);
+
     repaint();
 }
 
@@ -63,7 +60,7 @@ void Draw::paintEvent(QPaintEvent *e)
     //Start drawing
     qp.begin(this);
 
-    //Draw imported polygons
+    //Draw polygons
     for(unsigned int i = 0; i < polygons.size(); i++)
     {
         //Current polygon from file
@@ -73,13 +70,29 @@ void Draw::paintEvent(QPaintEvent *e)
         qp.drawPolygon(this_polygon);
     }
 
-    QPolygonF polygon_result;
+    //Draw polygon made by cursor
+    QPolygonF qpoly;
+    int r = 5;
+    for (int i = 0; i < polygon.size(); i++)
+    {
+        qp.drawEllipse(static_cast<int>(polygon[i].x()) - r/2, static_cast<int>(polygon[i].y()) - r/2, r, r);
+        qpoly.append(polygon[i]);
+    }
 
-    // set Brush
+    //Draw polygon
+    qp.drawPolygon(qpoly);
+
+    //Add to polygons in order to gain the possibility of emphasizing
+    polygons.push_back(qpoly);
+    qpoly.clear(); //Clear polygon
+
+    //Set Brush
     QBrush brush;
     brush.setColor(Qt::green);
     brush.setStyle(Qt::Dense3Pattern);
     QPainterPath path;
+
+    QPolygonF polygon_result;
 
     // Draw polygon with point inside
     for(unsigned int i = 0; i < result.size(); i++)
@@ -102,26 +115,11 @@ void Draw::paintEvent(QPaintEvent *e)
     }
 
     //Draw point q
-    int r = 5;
     int r2 = 10;
     qp.drawEllipse(static_cast<int>(q.x()) - r,static_cast<int>(q.y()) - r, r2, r2);
 
-    //Draw all points and polygon
-    QPolygonF qpoly;
-    for (int i = 0; i < polygon.size(); i++)
-    {
-        qp.drawEllipse(static_cast<int>(polygon[i].x()) - r/2, static_cast<int>(polygon[i].y()) - r/2, r, r);
-        qpoly.append(polygon[i]);
-    }
-
-    //Draw polygon
-    qp.drawPolygon(qpoly);
-
     //Stop drawing
     qp.end();
-
-    //Add to polygons in order to gain the possibility of emphasizing
-    polygons.push_back(qpoly);
 }
 
 void Draw::clearCanvas()
@@ -199,10 +197,13 @@ bool Draw::importPolygons(std::string &path)
     return false;
 }
 
-void Draw::generatePolygon(int n_points)
+void Draw::generatePolygon(int n_points, int width, int height)
 {
+    //Using Graham Scan Algorithm
+
     clearCanvas();
     polygons.clear(); //Delete already opened polygons
+
     //Input cannot be a triangle, line or point
     if(n_points < 4){
         QMessageBox msgBox;
@@ -215,83 +216,102 @@ void Draw::generatePolygon(int n_points)
     n_points = n_points -1;
 
     //Generate polygons
-    QPolygonF polygon;
+     QPolygonF polygon;
 
     //Generate x and y points
     for(int i = 0; i < n_points; i++)
     {
         QPointF point;
-        point.setX(rand()%1000);
-        point.setY(rand()%600);
+        point.setX(rand()%width);
+        point.setY(rand()%height);
         polygon.push_back(point);
     }
 
-    //Generate center of polygon
-    QPointF center;
+    //Sort by Y in order to find pivot
+    std::sort(polygon.begin(), polygon.end(), sortByY());
 
-    //Count sum of polygon coordinates
-    double sumaX = 0;
-    double sumaY = 0;
+    std::vector<Angle> angles; //Vector of angles from pivot
+    int index = 0;
 
-    for(int i = 0; i < n_points; i++){
-        sumaX = sumaX + polygon.at(i).x();
-        sumaY = sumaY + polygon.at(i).y();
+    //Reduce singulary caused by kolinear points
+    double eps = 1.0-6;
+    for(int i = 1;i<polygon.size();i++)
+    {
+        if((polygon[0].y() - polygon[i].y())<eps)
+        {
+            index++;
+        }
     }
 
-    //Count polygon center coordinates
-    center.setX(sumaX/n_points);
-    center.setY(sumaY/n_points);
+    //Pivot with min y and max x
+    QPointF q = polygon[index];
+    polygon.push_back(q);
 
-    //Sorted polygon
-    QPolygonF polygon_sorted;
+    //Find s point on axe x
+    std::sort(polygon.begin(), polygon.end(), sortByX());
+    QPointF s(polygon[0].x(),q.y());
 
-    // Sort points in polygon by angles to get topologically correct polygon
-    while(!polygon.empty()){
+    //Calculate angles and distance beetwen pivot-axes X and pivot-some points
+    Angle point;
 
-        int ind_min = 0;
-        double angle_min = 360;
-        double fixed_angle = 0;
+    for(int i = 0; i<polygon.size();i++)
+    {
+        //Set some point to the Angle
+        point.p.setX(polygon[i].x());
+        point.p.setY(polygon[i].y());
 
-        //Count angle between axis Y and line
-        for(int i = 0; i < polygon.size(); i++) {
-
-            //Smernik
-            double angle = atan(fabs((polygon[i].x()-center.x()))/fabs(polygon[i].y()-center.y()));
-
-            //Check the quadrant and fix the angel
-            if((polygon[i].x()-center.x())<0 && (polygon[i].y()-center.y())>0){
-                fixed_angle = angle;
-            }
-
-            if((polygon[i].x()-center.x())<0 && (polygon[i].y()-center.y())<0){
-                fixed_angle = 180-angle;
-            }
-
-            if((polygon[i].x()-center.x())>0 && (polygon[i].y()-center.y())<0){
-                fixed_angle = 180+angle;
-            }
-
-            if((polygon[i].x()-center.x())>0 && (polygon[i].y()-center.y())>0){
-                fixed_angle = 360-angle;
-            }
-
-            //Find the smallest angle so angles would be in clockwise and final polygon would be topologically correct
-            if(fixed_angle<angle_min){
-                angle_min = angle;
-                ind_min = i;
-            }
+        if(q == polygon[i])
+        {
+            //Angle = 0
+            point.a = 0;
+            //Distance = 0
+            point.d = Algorithms::length2Points(q,polygon[i]);
+        }
+        else
+        {
+            //Angle between axe x and some point (pivot is the vertex)
+            point.a = Algorithms::getAngle2Vectors(q,s,q, polygon[i]);
+            //Distance from pivot to some point
+            point.d = Algorithms::length2Points(q,polygon[i]);
         }
 
-        //Add point with minimum angle to another polygon in order to count with rest points
-        polygon_sorted<<(polygon.takeAt(ind_min));
+        //Angles and distances from pivot to some point
+        angles.push_back(point);
     }
 
-    //Add center point to final polygon
-    polygon_sorted<<center;
+    //Sort points in struct Angle by angle and distance
+    std::sort(angles.begin(), angles.end(), sortByAngle());
 
-    polygons.push_back(polygon_sorted);
+    //Select point of star shape from sorted points
+    double angle_before = 0;
+    double distance_before = 0;
+    QPolygonF pointsByAngle;
 
-    qDebug()<<polygons;
+    //Sort points in polygon pointsByAngle by angle and distance from smallest angle to greatest
+    angles.push_back(angles[angles.size()]); //Broaden the vector
+    pointsByAngle.push_back(angles[0].p); //Point with smallest angle
+
+    for(unsigned int i = 0; i < angles.size(); i++)
+    {
+        double eps = 1.0e-9;
+        if(fabs(angles[i].a - angle_before) < eps)
+        {
+            if(angles[i].d>distance_before)
+            {
+                distance_before = angles[i].d;
+            }
+        }
+        else
+        {
+            angle_before = angles[i].a;
+            distance_before = angles[i].d;
+            pointsByAngle.push_back(angles[i-1].p);
+
+        }
+    }
+
+    polygons.push_back(pointsByAngle);
+    pointsByAngle.clear(); //Clear polygon
 
     repaint();
 }

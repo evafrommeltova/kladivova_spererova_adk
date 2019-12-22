@@ -24,10 +24,10 @@ public:
     void clearCanvas();
     void setDrawMode(){draw_mode = !draw_mode;} //Switch, whether to draw a point or nothing
     bool importPolygons(std::string &path);
-    void generatePolygon(int n_points);
+    void generatePolygon(int n_points, int width, int height);
     void setResult(std::vector<int> res){result = res;}
     QPointF getPoint(){return q;}
-    QPolygonF getPolygon(unsigned int index){return polygons.at(index);}
+    QPolygonF getPolygon(unsigned int index){return polygons[index];}
     std::vector<QPolygonF> getPolygons(){return polygons;}
 
 signals:

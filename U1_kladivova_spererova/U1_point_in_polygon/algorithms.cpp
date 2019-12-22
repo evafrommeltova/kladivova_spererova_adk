@@ -1,5 +1,8 @@
 #include "algorithms.h"
 #include <cmath>
+#include <sortbyx.h>
+#include <sortbyy.h>
+#include <sortbyangle.h>
 
 Algorithms::Algorithms()
 {
@@ -168,9 +171,6 @@ int Algorithms::positionPointPolygonRayCrossing(QPointF &q, QPolygonF &pol)
     //Odd/even amount of intersections
     return k%2;
 }
-
-
-
 
 
 
