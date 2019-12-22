@@ -6,7 +6,7 @@ Generator::Generator()
 }
 
 
-std::vector<QPoint3D> Generator::generateHill()
+std::vector<QPoint3D> Generator::generateHill(int width, int height)
 {
     //Initialization
     std::vector<QPoint3D> random_points;
@@ -14,20 +14,20 @@ std::vector<QPoint3D> Generator::generateHill()
     QPoint3D peak;
 
     //Ellipse parameters
-    double a = rand()%300;
-    double b = rand()%300;
-    int n = rand()%20; //Number of point in particular ellipse
+    double a = width * 0.15;
+    double b = height * 0.1;
+    int n = rand()%20 + 3; //Number of point in particular ellipse
 
     //Divide the ellipse to angles according to n value
     double fi = (2*M_PI)/(n);
 
     //Set coordinates to the peak
-    peak.setX(rand()%200 + 200);
-    peak.setY(rand()%200 + 200);
+    peak.setX(width/2);
+    peak.setY(height/2);
     peak.setZ(rand()%400 + 300);
 
     //Create more ellipses with different radius and with different heights (bigger radius, smaller height)
-    for(int j = 0;j<4;j++)
+    for(int j = 0;j<5;j++)
     {
         //Generate ellipse with n points
         for(int i = 0;i<n;i++)
@@ -38,13 +38,13 @@ std::vector<QPoint3D> Generator::generateHill()
             random_points.push_back(random);
 
         }
-        a+=j*50;
-        b+=j*50;
+        a+=j*30;
+        b+=j*30;
     }
     return random_points;
 }
 
-std::vector<QPoint3D> Generator::generateValley()
+std::vector<QPoint3D> Generator::generateValley(int width, int height)
 {
     //Initialization
     std::vector<QPoint3D> random_points;
@@ -53,28 +53,28 @@ std::vector<QPoint3D> Generator::generateValley()
     QPoint3D p1; //line edge point
 
 
-    int n = rand()%30; //number of points in one line
-    double a = rand()%50;  //length of lines from center point
+    int n = rand()%10 + 3; //number of points in one line
+    double a = width * 0.15;  //length of lines from center point
 
     //Center lowest point
-    center.setX(rand()%200 + 200);
-    center.setY(rand()%200 + 200);
+    center.setX(width/2);
+    center.setY(height/2);
     center.setZ(rand()%50);
 
     //Create more parallel lines with different length from center point (bigger length, bigger height)
-    for(int j = 0;j<4;j++)
+    for(int j = 0;j<5;j++)
     {
         //Create two parallel lines of points with the same height
         for(int i = 0;i<n;i++)
         {
             p.setX(center.x()+a);
-            p.setY(center.y()+i*20);
+            p.setY(center.y()+i*10);
             p.setZ(center.getZ()+a);
 
             random_points.push_back(p);
 
             p1.setX(center.x()-a);
-            p1.setY(center.y()+i*20);
+            p1.setY(center.y()+i*10);
             p1.setZ(center.getZ()+a);
 
             random_points.push_back(p1);
@@ -85,7 +85,7 @@ std::vector<QPoint3D> Generator::generateValley()
     return random_points;
 }
 
-std::vector<QPoint3D> Generator::generateRidge()
+std::vector<QPoint3D> Generator::generateRidge(int width, int height)
 {
      //Initialization
      std::vector<QPoint3D> random_points;
@@ -93,16 +93,16 @@ std::vector<QPoint3D> Generator::generateRidge()
      QPoint3D p; //line edge point
      QPoint3D p1; //line edge point
 
-     int n = rand()%20; //number of points in one line
-     double a = rand()%30; //length of lines from center point
+     int n = rand()%10 + 3; //number of points in one line
+     double a = width * 0.15;  //length of lines from center point
 
      //Center highest point
-     center.setX(rand()%200 + 200);
-     center.setY(rand()%200 + 200);
+     center.setX(width/2);
+     center.setY(height/2);
      center.setZ(rand()%50 + 700);
 
      //Create more parallel lines with different length from center point (bigger length, lower height)
-     for(int j = 0;j<4;j++)
+     for(int j = 0;j<5;j++)
      {
          //Create two parallel lines of points with the same height
          for(int i = 0;i<n;i++)
@@ -125,33 +125,38 @@ std::vector<QPoint3D> Generator::generateRidge()
      return random_points;
 }
 
-std::vector<QPoint3D> Generator::generateSaddle(){
+std::vector<QPoint3D> Generator::generateSaddle(int width, int height){
 
     std::vector<QPoint3D> random_points;
     QPoint3D l, r, u, d; //left, right, up, down peaks of hills
     QPoint3D random;
 
     //Ellipse parameters
-    double a = rand()%300;
-    double b = rand()%300;
-    int n = rand()%10; //Number of point in particular ellipse
+    double a = width * 0.15;
+    double b = height * 0.1;
+    int n = rand()%10 + 3; //Number of point in particular ellipse
+    int m = rand()%100 + 150; //Size of terrain shape
+
+    QPoint3D center;
+    center.setX(width/2);
+    center.setY(height/2);
 
     //Saddle hills and holes
-    l.setX(50);
-    l.setY(240);
-    l.setZ(800);
+    l.setX(center.x()-m);
+    l.setY(center.y());
+    l.setZ(500);
 
-    r.setX(490);
-    r.setY(250);
-    r.setZ(800);
+    r.setX(center.x()+m);
+    r.setY(center.y());
+    r.setZ(500);
 
-    u.setX(260);
-    u.setY(60);
-    u.setZ(300);
+    u.setX(center.x());
+    u.setY(center.y()+m);
+    u.setZ(800);
 
-    d.setX(250);
-    d.setY(500);
-    d.setZ(300);
+    d.setX(center.x());
+    d.setY(center.y()-m);
+    d.setZ(800);
 
     random_points.push_back(l);
     random_points.push_back(r);
@@ -206,7 +211,7 @@ std::vector<QPoint3D> Generator::generateSaddle(){
     return random_points;
 }
 
-std::vector<QPoint3D> Generator::generateGentleRidge(){
+std::vector<QPoint3D> Generator::generateGentleRidge(int width, int height){
 
     //Initialization
     std::vector<QPoint3D> random_points;
@@ -214,16 +219,16 @@ std::vector<QPoint3D> Generator::generateGentleRidge(){
     QPoint3D peak;
 
     //Ellipse parameters
-    double a = rand()%300;
-    double b = rand()%300;
+    double a = width * 0.15;
+    double b = height * 0.1;
     int n = rand()%10 + 3; //Number of point in particular ellipse
 
     //Divide the ellipse to angles according to n value (special range of angles)
     double fi = (M_PI/3)/(n);
 
     //Set coordinates to the peak
-    peak.setX(rand()%200 + 50);
-    peak.setY(rand()%200 + 50);
+    peak.setX(width/2-200);
+    peak.setY(height/2-200);
     peak.setZ(rand()%400 + 300);
 
     int k = 1; //Make diferent interval between ellipses
@@ -272,9 +277,9 @@ std::vector<QPoint3D> Generator::generateGrid(int grid)
 
 
     //Classical grid with regular distance
-     for(int j = 0; j < 800; j += grid)
+     for(int j = 0; j < 500; j += grid)
      {
-         for(int i = 0;i<800;i += grid)
+         for(int i = 0;i<500;i += grid)
          {
              p.setX(j);
              p.setY(i);

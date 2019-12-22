@@ -23,6 +23,7 @@ private:
     int dz;                             //distance between contours
     std::vector<Triangle> dtm;
     bool slope, aspect;
+    bool panchromatic, colorful;
 
 public:
     explicit Draw(QWidget *parent = nullptr);
@@ -43,6 +44,8 @@ public:
 
     void setSlope(bool &slope_){slope = slope_;}//
     void setAspect(bool &aspect_){aspect = aspect_;}//
+    void setPanchromatic(bool &panchromatic_){panchromatic = panchromatic_;}//
+    void setColorful(bool &colorful_){colorful = colorful_;}//
     void setDTM(std::vector<Triangle> &dtm_){dtm = dtm_;}
 
     static void importPolygons(std::string &path, std::vector<QPoint3D> &points,  QSizeF &canvas_size, double &min_z, double &max_z); //

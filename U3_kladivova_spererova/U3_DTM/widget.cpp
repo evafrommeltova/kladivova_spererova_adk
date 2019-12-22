@@ -122,21 +122,25 @@ void Widget::on_generateTerrain_clicked()
 
     std::vector<QPoint3D> points;
 
+    //Get window size
+    int width = ui -> Canvas -> size().width();
+    int height = ui -> Canvas -> size().height();
+
     //Generate terrain shapes
     if (ui->comboBox->currentIndex()==0)
-        points = Generator::generateHill();
+        points = Generator::generateHill(width, height);
 
     else if (ui->comboBox->currentIndex()==1)
-       points = Generator::generateValley();
+       points = Generator::generateValley(width, height);
 
     else if (ui->comboBox->currentIndex()==2)
-       points = Generator::generateRidge();
+       points = Generator::generateRidge(width, height);
 
     else if (ui->comboBox->currentIndex()==3)
-       points = Generator::generateSaddle();
+       points = Generator::generateSaddle(width, height);
 
     else if (ui->comboBox->currentIndex()==4)
-        points = Generator::generateGentleRidge();
+        points = Generator::generateGentleRidge(width, height);
 
     else if (ui->comboBox->currentIndex()==5)
         points = Generator::generateGrid(100);
@@ -190,8 +194,11 @@ void Widget::on_analyzeDTM_clicked()
         dt = ui->Canvas->getDT();
     }
 
+    //Initialize boolean variables
     bool slope = FALSE;
     bool aspect = FALSE;
+    bool panchromatic = FALSE;
+    bool colorful = FALSE;
 
     //Analyze DTM
     std::vector<Triangle> dtm = Algorithms::analyzeDTM(dt);
@@ -209,8 +216,19 @@ void Widget::on_analyzeDTM_clicked()
         aspect = TRUE;
     }
 
+    //Show vizualization
+    if (ui->comboBox_3->currentIndex()==0){
+        panchromatic = TRUE;
+        colorful = FALSE;
+    }
+    else if (ui->comboBox_3->currentIndex()==1){
+        panchromatic = FALSE;
+        colorful = TRUE;
+    }
     ui->Canvas->setAspect(aspect);
     ui->Canvas->setSlope(slope);
+    ui->Canvas->setPanchromatic(panchromatic);
+    ui->Canvas->setColorful(colorful);
 
     repaint();
 }

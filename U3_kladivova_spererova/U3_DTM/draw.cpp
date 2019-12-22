@@ -49,36 +49,48 @@ void Draw::paintEvent(QPaintEvent *event)
             QPoint3D p2 = t.getP2();
             QPoint3D p3 = t.getP3();
 
-            int slope = static_cast<int>(t.getSlope());
+            if(panchromatic == TRUE){
+                double k = 255.0 / 180;
+                int slope = static_cast<int>(255 - t.getSlope() * k);
 
-            //Slope values can be from 0 to 90°
-            //Create semi-transparent color palette
-            if((slope>=0) && (slope<1)){
-               painter.setBrush(QColor(5, 148, 0, 187)); //Dark green
+                //Set panchromatic color brush
+                QColor c(slope, slope, slope);
+                painter.setBrush(c);
             }
-            else if((slope>=1) && (slope<3)){
-               painter.setBrush(QColor(8, 186, 2, 187));
+
+            if(colorful == TRUE){
+
+                int slope = static_cast<int>(t.getSlope());
+
+                //Slope values can be from 0 to 90°
+                //Create semi-transparent color palette
+                if((slope>=0) && (slope<1)){
+                   painter.setBrush(QColor(5, 148, 0, 187)); //Dark green
+                }
+                else if((slope>=1) && (slope<3)){
+                   painter.setBrush(QColor(8, 186, 2, 187));
+                }
+                else if((slope>=3) && (slope<5)){
+                   painter.setBrush(QColor(110, 205, 26, 187));
+                }
+                else if((slope>=5) && (slope<7)){
+                   painter.setBrush(QColor(168, 228, 49, 187));
+                }
+                else if((slope>=7) && (slope<10)){
+                   painter.setBrush(QColor(224, 240, 0, 187));
+                }
+                else if((slope>=10) && (slope<13)){
+                   painter.setBrush(QColor(240, 200, 0, 187));
+                }
+                else if((slope>=13) && (slope<17)){
+                   painter.setBrush(QColor(240, 152, 0, 187));
+                }
+                else if((slope>=17) && (slope<22)){
+                   painter.setBrush(QColor(240, 112, 0, 187));
+                }
+                else
+                   painter.setBrush(QColor(240, 40, 0, 187)); //Dark red
             }
-            else if((slope>=3) && (slope<5)){
-               painter.setBrush(QColor(110, 205, 26, 187));
-            }
-            else if((slope>=5) && (slope<7)){
-               painter.setBrush(QColor(168, 228, 49, 187));
-            }
-            else if((slope>=7) && (slope<10)){
-               painter.setBrush(QColor(224, 240, 0, 187));
-            }
-            else if((slope>=10) && (slope<13)){
-               painter.setBrush(QColor(240, 200, 0, 187));
-            }
-            else if((slope>=13) && (slope<17)){
-               painter.setBrush(QColor(240, 152, 0, 187));
-            }
-            else if((slope>=17) && (slope<22)){
-               painter.setBrush(QColor(240, 112, 0, 187));
-            }
-            else
-               painter.setBrush(QColor(240, 40, 0, 187)); //Dark red
 
             //Create polygon
             QPolygonF triangle;
@@ -94,7 +106,6 @@ void Draw::paintEvent(QPaintEvent *event)
     //Draw aspect
     if(aspect == TRUE)
     {
-
         for (Triangle t : dtm)
         {
             //Get triangle vertices
@@ -102,34 +113,45 @@ void Draw::paintEvent(QPaintEvent *event)
             QPoint3D p2 = t.getP2();
             QPoint3D p3 = t.getP3();
 
-            int aspect = static_cast<int>(t.getAspect());
+            if(panchromatic == TRUE){
+                double k = 255.0 / 360;
+                int aspect = static_cast<int>(255 - t.getAspect() * k);
 
-            // Create semi-transparent color palette
-            if(((aspect>=0.0) && (aspect<22.5)) || ((aspect>=-22.5) && (aspect<=0.0))){
-                painter.setBrush(QColor(133, 210, 0, 187)); //Light green
-            }
-            else if((aspect>=22.5) && (aspect<67.5)){
-                painter.setBrush(QColor(0, 168, 17, 187)); //Dark green
-            }
-            else if((aspect>=67.5) && (aspect<112.5)){
-                painter.setBrush(QColor(0, 22, 168, 187)); //Dark blue
-            }
-            else if((aspect>=112.5) && (aspect<157.5)){
-               painter.setBrush(QColor(106, 0, 168, 187)); //Purple
-            }
-            else if(((aspect>=157.5) && (aspect<180.0)) || ((aspect>=-180.0) && (aspect<-157.5)) ){
-                painter.setBrush(QColor(168, 0, 134, 187)); //Red/purple
-            }
-            else if((aspect>=-157.5) && (aspect<-112.5)){
-                painter.setBrush(QColor(238, 95, 124, 187)); //Pink
-            }
-            else if((aspect>=-112.5) && (aspect<-67.5)){
-                painter.setBrush(QColor(223, 163, 43, 187)); //Orange
-            }
-            else if((aspect>=-67.5) && (aspect<-22.5)){
-                painter.setBrush(QColor(255, 255, 44, 187)); //Yellow
+                //Set panchromatic color brush
+                QColor c(aspect, aspect, aspect);
+                painter.setBrush(c);
             }
 
+            if(colorful == TRUE){
+
+                int aspect = static_cast<int>(t.getAspect());
+
+                // Create semi-transparent color palette
+                if(((aspect>=0.0) && (aspect<22.5)) || ((aspect>=-22.5) && (aspect<=0.0))){
+                    painter.setBrush(QColor(133, 210, 0, 187)); //Light green
+                }
+                else if((aspect>=22.5) && (aspect<67.5)){
+                    painter.setBrush(QColor(0, 168, 17, 187)); //Dark green
+                }
+                else if((aspect>=67.5) && (aspect<112.5)){
+                    painter.setBrush(QColor(0, 22, 168, 187)); //Dark blue
+                }
+                else if((aspect>=112.5) && (aspect<157.5)){
+                   painter.setBrush(QColor(106, 0, 168, 187)); //Purple
+                }
+                else if(((aspect>=157.5) && (aspect<180.0)) || ((aspect>=-180.0) && (aspect<-157.5)) ){
+                    painter.setBrush(QColor(168, 0, 134, 187)); //Red/purple
+                }
+                else if((aspect>=-157.5) && (aspect<-112.5)){
+                    painter.setBrush(QColor(238, 95, 124, 187)); //Pink
+                }
+                else if((aspect>=-112.5) && (aspect<-67.5)){
+                    painter.setBrush(QColor(223, 163, 43, 187)); //Orange
+                }
+                else if((aspect>=-67.5) && (aspect<-22.5)){
+                    painter.setBrush(QColor(255, 255, 44, 187)); //Yellow
+                }
+            }
 
             //Create and draw the polygon
             QPolygonF triangle;
@@ -141,17 +163,14 @@ void Draw::paintEvent(QPaintEvent *event)
         }
     }
 
-    //Draw contour lines (black)
-    painter.setPen(Qt::black);
-
+    //Draw contour lines (brown)
     for (unsigned int i = 0; i < contours.size(); i++)
     {
         painter.drawLine(contours[i].getStart(), contours[i].getEnd());
+        painter.setPen(QPen(QColor(139,69,19),1));
     }
 
-    //Draw main contour lines (black,2) and make automatic text description of main contour heights
-    painter.setPen(QPen(Qt::black, 2));
-
+    //Draw main contour lines (brown,2) and make automatic text description of main contour heights
     for(unsigned int i = 0; i < mainContours.size(); i++)
     {
         painter.drawLine(mainContours[i].getStart(), mainContours[i].getEnd());
