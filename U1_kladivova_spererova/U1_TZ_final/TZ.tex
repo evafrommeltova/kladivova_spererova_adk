@@ -254,15 +254,21 @@ V závislosti na výsledné hodnotě $\Omega$ lze rozhodnout o poloze bodu q vů
 
 \subsection{Generování nekonvexního polygonu}
 Uživatel si nejprve zadá počet vrcholů polygonu, jež bude poté automaticky vygenerován. Pokud zvolí počet vrcholů 1,2 nebo 3 je zobrazena chybová hláška. Počet vrcholů polygonu musí být nejméně 4, aby mohl být výsledný obrazec nekonvexní. 
-Souřadnice náhodných bodů jsou redukovány pomocí funkce modulo, aby bylo zajištěno zobrazení bodů ve vykreslovacím widgetu. Uvnitř kódu je náhodně generováno (n - 1) bodů, jelikož jako n-tý bod je vygenerován střed všech vygenerovaných bodů. Od tohoto cetrálního bodu jsou poté vypočteny směrníky na všechny další body. Je samozřejmě nutné brát ohled na kvadranty arcus tangens. Podle velikosti směrníků jsou dále body v polygonu seřazeny ve směru hodinových ručiček. Důležitým zjištěním je fakt, že díky centrální bod je viditelný z každého vrcholu polygonu. Lze tedy říci, že výsledný polygon je tzv. star-shaped polygon.
+Souřadnice náhodných bodů jsou redukovány pomocí funkce modulo a pomocí velikosti zobrazovacího okna, aby bylo zajištěno zobrazení bodů ve vykreslovacím widgetu. Pro generování nekonvexního topologicky korektního polygonu (žádné hrany se nekříží) byla použita velká část Graham Scan algoritmu. Tento algoritmus funguje na principu zjišťování CCW (levotočivé) orientace trojúhelníku. Algoritmus Graham Scan je velmi rychlý a využívá se zejména ke kontrukci konvexních obálek. \\
+\indent Na počátku algoritmu setřídíme body podle Y souřadnice a bod s nejmenší Y souřadnicí označíme jako pivot (p). Poté se vypočteme směrnici vzhledem k ose x ke všem bodům množiny. Tyto body pak následně seřadíme podle velikosti směrnice. Takto seřazené body následně vykreslíme.
 
 \subsubsection{Slovní zápis algoritmu}
 \begin{enumerate}
-\item Náhodné vygenerování (n-1) bodů:  $x_{pi} = rand \% 1000; y_{pi} = rand \% 600$.
-\item Vygenerování centrálního bodu, jehož souřadnice jsou průměrem z již vygenerovaných souřadnic (n-1) bodů.
-\item Výpočet směrníků z centrálního bodu na jednotlivé body v závislosti na osách daného zobrazovacího widgetu.
-\item Určení kvadrantu a správný přepočet úhlu s ohledem na arcus tangens.
-\item Seřazení bodů v polygonu CW, tedy od nejmenšího směrníku.
+\item Náhodné vygenerování (n-1) bodů:  $x_{pi} = rand \% width; y_{pi} = rand \% height$.
+\item Setřídění vstupní množiny bodů podle souřadnice y.
+\item Nalezení pivota q:  $ q = min_{\forall p_i \in S} (y_i), q \in CH $ (pokud jsou souřadnice y u bodů stejné, vybere toho s nejvyšším indexem).
+\item Nalezení bodu s ve směru osy x (levé rameno úhlu): $ s = (q.x()-1, q.y()) $.
+\item Opakuj pro všechny body vstupní množiny:
+\subitem Spočti $omega_i$: $ omega_i= \angle (s, q, p_i)$ 
+\subitem Spočti $dist_i$: $ dist_i= |q p_i| $
+\item Setřídění bodů dle úhlu s osou x: $ {\forall p_i \in S}$ sort by $ \omega_i = \angle (s, q, p_i)$ 
+\item Při nalezení stejného úhlu: $ \omega_k = \omega_l \rightarrow $ neuvažovat bližší bod
+\item Přidej body do polygonu, který pak bude vykreslován
 \end{enumerate}
 
 %% -------<<< 3. KAPITOLKA = Problematické situace a jejich rozbor >>>-------\\%%
@@ -374,9 +380,9 @@ Do této kapitolky je zahrnuto několik ukázek vytvořené aplikace.
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=15cm]{pictures/100vertexes.png} 
-\caption[Automaticky generovaný nekonvexní polygon se 100 vrcholy]{Automaticky generovaný nekonvexní polygon se 100 vrcholy}
-\label{fig:100vertexes}
+\includegraphics[width=15cm]{pictures/50vertexes.png} 
+\caption[Automaticky generovaný nekonvexní polygon s 50 vrcholy]{Automaticky generovaný nekonvexní polygon s 50 vrcholy}
+\label{fig:50vertexes}
 \end{center}
 \end{figure}
 
@@ -397,7 +403,7 @@ Do této kapitolky je zahrnuto několik ukázek vytvořené aplikace.
 \vspace*{-1cm}
 \section{Technická dokumentace}
 \subsection{Třídy}
-V aplikaci se nachází celkem tři třídy Algorithms, Draw a Widget. Každá z těchto tříd má svůj hlavičkový soubor, kde je deklarována spolu se svými metodami, a svůj zdrojový soubor, ve kterém jsou její metody konkrétně definovány.
+V aplikaci se nachází celkem šesti tříd - třídy Algorithms, Draw a Widget, sortByY, sortByX, sortByAngle. Každá z těchto tříd má svůj hlavičkový soubor, kde je deklarována spolu se svými metodami a svůj zdrojový soubor.
 \subsubsection{Algorithms}
 Třída Algorithms obsahuje konstruktor a další čtyři metody, které jsou určeny pro výpočet algoritmů používaných v digitálním GIS. Datové typy u bodu a polygonu byly zvoleny s plovoucí desetinnou čárkou (floating point).\\
 
@@ -467,7 +473,19 @@ Tato metoda zavolá vybraný algoritmus a zobrazí, zda se bod nachází v polyg
 Funkce se zavolá po kliknutí na tlačítko Import polygons. V těle funkce je definován způsob načtení dat.\\
 
 \noindent\textbf{void on\_generatePolygon\_clicked}\\
-Při stisknutí tlačítka Generate nonconvex polygon je touto funkcí přivolána metoda generatePolygon, která podle zadaného počtu vrcholů vykreslí nekonvexní polygon.
+Při stisknutí tlačítka Generate nonconvex polygon je touto funkcí přivolána metoda generatePolygon, která podle zadaného počtu vrcholů vykreslí nekonvexní polygon. V rámci této metody je použit Graham Scan algoritmus.
+
+\subsubsection{sortByX}
+Třída, která definuje operátor přetížení \textit{()}, který třídí body podle X souřadnice. Pokud je X souřadnice stejná, rozhoduje se podle souřadnice Y. Třídící funkce jsou využity při automatické tvorbě nekovexního polygonu.
+
+\subsubsection{sortByY}
+Třída, která definuje operátor přetížení \textit{()}, který třídí body podle Y souřadnice. Pokud je Y souřadnice stejná, rozhoduje se podle souřadnice X.
+
+\subsubsection{sortByAngle}
+Třída, která definuje operátor přetížení \textit{()}, který třídí úhly typu Angle (samostatně definovaná struktura) podle velikosti. Pokud je úhel stejný, rozhoduje vzdálenost mezi datovými prvky typu Angle.
+
+\subsubsection{Angle}
+Jedná se o strukturu, která definuje datový typ Angle, který je využíván při generování nekonvexního polygonu. Skládá se z bodu q typu QPointF, z úhlu od rovnoběžky s osou x k tomuto bodu (double) a ze vzdálenosti mezi počátečním bodem a bodem q.
 
 \newpage
 \vspace*{-1cm}
@@ -482,7 +500,7 @@ Ve funkci positionPointPolygonWinding je na začátku ošetřeno, zda vyhledáva
 Pokud uživatel zadá více polygonů, jsou analyzovány pomocí for cyklu. Ty polygony, u kterých je splněna podmínka, že leží uvnitř polygonu, jsou zvýrazněny zelenou barvou. Pokud tedy bod leží přesně na hraně dvou polygonů, zvýrazněny jsou oba polygony.\\
 
 \noindent\textbf{Tvorba nekonvexního polygonu}\\
-Pro tvorbu polygonu je nutné zvolit počet vrcholů. Defaultně je hodnota nastavena na číslo 4. Ve funkci pro generování polygonů je na začátku uvedena podmínka, že vkládané číslo nesmí být menší než 4. Pokud uživatel zadá číslo měnší než 4 nebo text, objeví se chybová hláška upozorňující na neplatný vstup.
+Pro tvorbu polygonu je nutné zvolit počet vrcholů. Defaultně je hodnota nastavena na číslo 4. Ve funkci pro generování polygonů je na začátku uvedena podmínka, že vkládané číslo nesmí být menší než 4. Pokud uživatel zadá číslo měnší než 4 nebo text, objeví se chybová hláška upozorňující na neplatný vstup. Jelikož je pro tvorbu použit Graham Scan algoritmus, je výsledný polygon topologicky korektní (žádné dvě hrany se neprotínají).
 
 
 %% -------<<< 5. KAPITOLA = Závěr >>>-------\\%%
