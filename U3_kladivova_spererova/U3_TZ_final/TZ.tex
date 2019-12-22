@@ -288,17 +288,26 @@ $$ n_y = -(u_x \cdot v_z - u_z \cdot v_x) $$
 \section{Informace o bonusových úlohách}
 
 \subsection{Výběr barevných stupnic}
-V rámci této bonusové úlohy byly definovány barevné stupnice pro zobrazení sklonu a expozice. Pro sklon byly zvoleny odstíny barev od zelené (téměř rovina) po červenou (strmý svah). Inspirací pro volbu této barevné škály byla aplikace Analýzy výškopisu, jejímž provozovatelem je Zeměměřický úřad. \\
-\indent Stupňové intervaly byly rovněž voleny podle schémata použitého ve výše zmíněné aplikaci při analýze \textit{Slope}, viz obrázek \ref{fig:analyzy_slope}. Aby byly dobře vidět i vrstevnice, bylo pracováno s průhledností. Složky RGB barev byly namíchány na webové stránce https://www.colorspire.com/rgb-color-wheel/. Samotné vytvoření barevných škál bylo implementováno ve třídě Draw, kde byly procházeny jednotlivé trojúhelníky Delaunayho triangulace a ke každému trojúhelníku podle spočtené analýzy byla přiřazena konkrétní barva. Výběr barevných stupnic sklonu je nejlépe viditelný při analýzách nad generovanými terénními tvary. Na obrázku  \ref{fig:slope_gentle_ridge} je zobrazena analýzu sklonu nad spočinkem.
+V rámci této bonusové úlohy byly definovány barevné stupnice pro zobrazení sklonu a expozice. Byl vytvořen ComboBox, ve kterím je možné si vybrat buď panchromatickou škálu nebo barevnou škálu. Panchromatická škála pro sklon přiděluje černější barvu, pokud je sklon větší, naopak malé slkoly jsou teméř bíle. Nevýhodou trošku je, že data, která byla použita mají velmi malé sklony, tudíž barevný rozdíl v odstínech šedi není tak výrazný. Pro barevnou škálu pro sklon byly zvoleny odstíny barev od zelené (téměř rovina) po červenou (strmý svah). Inspirací pro volbu této barevné škály byla aplikace Analýzy výškopisu, jejímž provozovatelem je Zeměměřický úřad. \\
+\indent Stupňové intervaly byly rovněž voleny podle schémata použitého ve výše zmíněné aplikaci při analýze \textit{Slope}, viz obrázek \ref{fig:analyzy_slope}. Aby byly dobře vidět i vrstevnice, bylo pracováno s průhledností. Složky RGB barev byly namíchány na webové stránce https://www.colorspire.com/rgb-color-wheel/. Samotné vytvoření barevných škál bylo implementováno ve třídě Draw, kde byly procházeny jednotlivé trojúhelníky Delaunayho triangulace a ke každému trojúhelníku podle spočtené analýzy a podle vybraného typu škály byla přiřazena konkrétní barva. Výběr barevných stupnic sklonu je nejlépe viditelný při analýzách nad generovanými terénními tvary. Na obrázcích \ref{fig:gentle_ridge_colorful_slope} a \ref{fig:gentle_ridge_panchromatic_slope}  je zobrazena analýzu sklonu nad spočinkem.
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=15cm]{pictures/slope_gentle_ridge.PNG} 
-\caption[Analýza sklonu nad spočinkem]{Analýza sklonu nad spočinkem}
-\label{fig:slope_gentle_ridge}
+\includegraphics[width=12cm]{pictures/gentle_ridge_colorful_slope.PNG} 
+\caption[Analýza sklonu nad spočinkem s využitím barevné škály]{Analýza sklonu nad spočinkem s využitím barevné škály}
+\label{fig:gentle_ridge_colorful_slope}
 \end{center}
 \end{figure}
+
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=12cm]{pictures/gentle_ridge_panchromatic_slope.PNG} 
+\caption[Analýza sklonu nad spočinkem s využitím panchromatické škály]{Analýza sklonu nad spočinkem s využitím panchromatické škály}
+\label{fig:gentle_ridge_panchromatic_slope}
+\end{center}
+\end{figure}
+
 
 \begin{figure}[hbt!] 
 \begin{center}
@@ -309,7 +318,7 @@ V rámci této bonusové úlohy byly definovány barevné stupnice pro zobrazen�
 \end{figure}
 
 \newpage
-Pro vyznačení expozice byly voleny sytější barvy, která na sebe navazují. Inspirací pro stupňové intervaly byla barevná stupnice vytvořená pro analýzu \textit{Aspect} v programu ArcGIS, jež je znázorněna na následujícím obrázku \ref{fig:aspect}. 
+Pro vyznačení expozice byly v barevné škále voleny sytější barvy, která na sebe navazují. Inspirací pro stupňové intervaly byla barevná stupnice vytvořená pro analýzu \textit{Aspect} v programu ArcGIS, jež je znázorněna na následujícím obrázku \ref{fig:aspect}. 
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
@@ -325,30 +334,41 @@ Barevní paleta byla volena podle schémata použitého v aplikaci Analýzy vý�
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=8cm]{pictures/analyzy_aspect.PNG} 
+\includegraphics[width=7cm]{pictures/analyzy_aspect.PNG} 
 \caption[Stupňové intervaly v mapové aplikaci Analýzy výškopisu při analýze orientace terénu ]{Stupňové intervaly v mapové aplikaci Analýzy výškopisu při analýze orientace terénu}
 \label{fig:analyzy_aspect}
 \end{center}
 \end{figure}
 
-Na obrázku \ref{fig:gentle_ridge_aspect} můžeme vidět analýzu sklonu nad vygenerovaným spočinkem. Sklon se nejdříve snižuje a poté zase zvětšuje. Je patrné, že velká část spočinku se nachází v severovýchodním a východním směru.
+\newpage
+Obdobně byla vytvořena i panchromatická paleta, která nicméně v severním směru barevně nenavazuje, což není úplně štastné. Vhodnější je rozhodně pro analýzu orientace použít barevnou variantu.
+
+Na obrázcích \ref{fig:gentle_ridge_colorful_aspect} a \ref{fig:gentle_ridge_panchromatic_aspect} můžeme vidět analýzu sklonu nad vygenerovaným spočinkem. Sklon se nejdříve snižuje a poté zase zvětšuje. Je patrné, že velká část spočinku se nachází v severovýchodním a východním směru.
+
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=12cm]{pictures/gentle_ridge_colorful_aspect.PNG} 
+\caption[Analýza expozice nad spočinkem v barevné škále]{Analýza expozice nad spočinkem v barevné škále}
+\label{fig:gentle_ridge_colorful_aspect}
+\end{center}
+\end{figure}
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=15cm]{pictures/gentle_ridge_aspect.PNG} 
-\caption[Analýza expozice nad spočinkem]{Analýza expozice nad spočinkem}
-\label{fig:gentle_ridge_aspect}
+\includegraphics[width=15cm]{pictures/gentle_ridge_panchromatic_aspect.PNG} 
+\caption[Analýza expozice nad spočinkem v panchromatické škále]{Analýza expozice nad spočinkem v panchromatické škále}
+\label{fig:gentle_ridge_panchromatic_aspect}
 \end{center}
 \end{figure}
 
 \subsection{Automatický popis vrstevnic}
-Automatický popis vrstevnic byl vytvořen pro hlavní vrstevnice (každá pátá). Důležitým krokem bylo pozměnit funkci \textit{CreateContourLines}, aby nevracela pouze vektor hran vrstevnic, ale i vektor jednotlivých výšek. Tyto výšky pak byly pomocí funkce \textit{SetMainContours} převedeny do třídy \textit{Draw}, ve které byly využity přímo při vykreslování hlavních vrstevnic.\\ \indent Text byl umístěn do průměrných souřadnic mezi počátkem a koncem každé hrany hlavní vrstevnice. Pro umístění popisu byla použita funkce \textit{drawText}. Další vylepšení popisu vrstevnic, jako například natočení vzhledem k hraně, popis směřující hlavou do kopce, rovnoměrné rozložení kót po vrstevnici, či vynechání vrstevnice v místě popisu, řešeno nebylo. Popis hlavních vrstevnic je patrný z obrázku \ref{fig:gentle_ridge_aspect}.
+Automatický popis vrstevnic byl vytvořen pro hlavní vrstevnice (každá pátá). Důležitým krokem bylo pozměnit funkci \textit{CreateContourLines}, aby nevracela pouze vektor hran vrstevnic, ale i vektor jednotlivých výšek. Tyto výšky pak byly pomocí funkce \textit{SetMainContours} převedeny do třídy \textit{Draw}, ve které byly využity přímo při vykreslování hlavních vrstevnic.\\ \indent Text byl umístěn do průměrných souřadnic mezi počátkem a koncem každé hrany hlavní vrstevnice. Pro umístění popisu byla použita funkce \textit{drawText}. Další vylepšení popisu vrstevnic, jako například natočení vzhledem k hraně, popis směřující hlavou do kopce, rovnoměrné rozložení kót po vrstevnici, či vynechání vrstevnice v místě popisu, řešeno nebylo. Popis hlavních vrstevnic je patrný z obrázku \ref{fig:gentle_ridge_panchromatic_aspect}.
 
 \newpage
 \vspace*{-1cm}
 \subsection{Algoritmus pro automatické generování terénních tvarů}
-V rámci bonusové úlohy byly vytvořeny algoritmy na automatické generování terénních tvarů. Konkrétně byly navrženy algoritmy na generování kupy, údolí, vodorovného hřbetu, sedla a spočinku. Navíc byla implementována možnost generování pravidelného gridu, jelikož takové rozmístění bodů má za následek nejednoznačnost DT, kdy žádné čtyři body nesmí ležet na kružnici. Popis jednotlivých útvarů byl použit ze středoškolských zápisek z předmětu Mapování.
+V rámci bonusové úlohy byly vytvořeny algoritmy na automatické generování terénních tvarů. Konkrétně byly navrženy algoritmy na generování kupy, údolí, vodorovného hřbetu, sedla a spočinku. Navíc byla implementována možnost generování pravidelného gridu, jelikož takové rozmístění bodů má za následek nejednoznačnost DT, kdy žádné čtyři body nesmí ležet na kružnici. Všechny tyto algoritmy byly realizovány za využití velikosti mapového okna, a to tak, aby byly generovány pouze uvnitř této oblasti. Popis jednotlivých terénních útvarů byl použit ze středoškolských zápisek z předmětu Mapování.
 
 \subsubsection{Kupa}
 Jedná se o výrazně zaoblený vypuklý tvar. Povrch terénu klesá od vrcholu směrem na všechny strany. Tvarovou čárou je uzavřená křivka, která ohraničuje její vrchol a má kruhový, eliptický nebo nepravidelný tvar. V rámci naší aplikace je pro kupu zvoleno pojmenování \textbf{Hill}.
@@ -356,13 +376,13 @@ Jedná se o výrazně zaoblený vypuklý tvar. Povrch terénu klesá od vrcholu 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=11cm]{pictures/kupa.PNG} 
-\caption[Vygenerovaná kupa s vrstevnicemi]{Vygenerovaná kupa s vrstevnicemi}
-\label{fig:kupa}
+\includegraphics[width=12cm]{pictures/hill_panchromatic_slope.PNG} 
+\caption[Vygenerovaná kupa s vrstevnicemi po analýze sklonu]{Vygenerovaná kupa s vrstevnicemi po analýze sklonu}
+\label{fig:hill_panchromatic_slope}
 \end{center}
 \end{figure}
 
-\indent Kupa byla generována pomocí několika elips, jejichž střed je vrcholem kupy. Elipsa s větším poloměrem má menší výšku Z, pro klesání byl zvolen krok 20. Vygenerovaná kupa je zobrazena na obrázku \ref{fig:kupa}.
+\indent Kupa byla generována pomocí několika elips, jejichž střed je vrcholem kupy. Elipsa s větším poloměrem má menší výšku Z, pro klesání byl zvolen krok 20. Vygenerovaná kupa je zobrazena na obrázku \ref{fig:hill_panchromatic_slope}.
 $$
 X = X_0 + a * cos(\phi)
 $$
@@ -376,8 +396,18 @@ $$
 
 
 \subsubsection{Údolí}
-Jedná se o terénní útvar tvořící protáhlou vhloubenou plochu, která je tvořena působením vody nebo ledovci. V rámci aplikace je použito označení \textbf{Valley}. \\
-\indent Pro údolí byly vygenerovány přímky od nichž se v zadaném kroku vytváří nové přímky s konstantně stoupající hodnotou výšky. V uvedených vzorcích jsou p1 a p2 označení pro vzniklé přímky.\\
+Jedná se o terénní útvar tvořící protáhlou vhloubenou plochu, která je tvořena působením vody nebo ledovci. V rámci aplikace je použito označení \textbf{Valley}.
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=11cm]{pictures/valley_panchromatic_slope.PNG} 
+\caption[Vygenerované údolí s vrstevnicemi po analýze sklonu]{Vygenerované údolí s vrstevnicemi po analýze sklonu}
+\label{fig:valley_panchromatic_slope}
+\end{center}
+\end{figure}
+
+\indent Pro údolí byly vygenerovány přímky od nichž se v zadaném kroku vytváří nové přímky s konstantně stoupající hodnotou výšky. V uvedených vzorcích jsou p1 a p2 označení pro vzniklé přímky.Vygenerované údolí je zobrazeno na obrázku \ref{fig:valley_panchromatic_slope}.
 $$
 X_{p1} = X_0 + a
 $$
@@ -398,7 +428,7 @@ Z_{p2} = Z_0 + a
 $$
 
 \subsubsection{Vodorovný hřbet}
-Jedná se o protáhlý vypuklý terénní tvar, jehož vrcholová část je zaoblená. V aplikace je pojmenován jako \textbf{Ridge}. Hřbet byl generován podobným způsobem jako údolí, s tím rozdílem, že výška postupně nestoupá, ale klesá.  Vygenerovaný vodorovná hřbet je zobrazen na obrázku \ref{fig:hrbet}.
+Jedná se o protáhlý vypuklý terénní tvar, jehož vrcholová část je zaoblená. V aplikace je pojmenován jako \textbf{Ridge}. Hřbet byl generován podobným způsobem jako údolí, s tím rozdílem, že výška postupně nestoupá, ale klesá.  Vygenerovaný vodorovná hřbet je zobrazen na obrázku \ref{fig:ridge_panchromatic_slope}.
 $$
 X_{p1} = X_0 + a
 $$
@@ -421,15 +451,15 @@ $$
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=12cm]{pictures/hrbet.PNG} 
-\caption[Vygenerovaný vodorovný hřbet s vrstevnicemi]{Vygenerovaný vodorovný hřbet s vrstevnicemi}
-\label{fig:hrbet}
+\includegraphics[width=12cm]{pictures/ridge_panchromatic_slope.PNG} 
+\caption[Vygenerovaný vodorovný hřbet s vrstevnicemi po analýze sklonu]{Vygenerovaný vodorovný hřbet s vrstevnicemi po analýze sklonu}
+\label{fig:ridge_panchromatic_slope}
 \end{center}
 \end{figure}
 
 \subsubsection{Sedlo}
 Tento terénní útvar označuje nejnižší plochu mezi dvěma terénními tvary, např. kupami. Stýkají se v něm dvě hřbetnice a dvě údolnice. Vbíhají do něj dvě plochy vypuklé s ubývajícím spádem kolmo na hřbetnici a vybíhají z něj dvě plochy vhloubené s přibývajícím spádem. V aplikace je použito označení \textbf{Saddle}. \\
-\indent Generování sedla zahrnovalo vygenerování dvou kup a dvou prohlubní. Podstatné bylo rozmístění. Vlevo a vpravo byly generovány kupy, nahoře a dole prohlubně. Středy těchto terénních tvarů byly zvoleny napevno. Následně byly kolem těchto středů generovány elipsy s klesající/rostoucí výškou. Vygenerované sedlo je zobrazeno na obrázku \ref{fig:sedlo}. Můžeme si všimnout, že zvláště u vrcholů a prohlubní jsou výsledné vrstevnice generovány chybně. Mohla by pomoci možnost vložení povinných hran.\\
+\indent Generování sedla zahrnovalo vygenerování dvou kup a dvou prohlubní. Podstatné bylo rozmístění. Vlevo a vpravo od středu mapového okna byly generovány prohlubně, nahoře a dole kupy. Středy těchto terénních tvarů byly zvoleny napevno vzhledem ke středu mapového okna. Následně byly kolem těchto středů generovány elipsy s klesající/rostoucí výškou. Vygenerované sedlo je zobrazeno na obrázku \ref{fig:saddle_panchromatic_slope}. Můžeme si všimnout, že zvláště u vrcholů a prohlubní jsou výsledné vrstevnice generovány chybně. Mohla by pomoci možnost vložení povinných hran.\\
 
 Tvorba elips u kupy:
 $$
@@ -456,9 +486,9 @@ $$
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=14cm]{pictures/sedlo.PNG} 
-\caption[Vygenerovanéí sedlo s vrstevnicemi]{Vygenerované sedlo s vrstevnicemi}
-\label{fig:sedlo}
+\includegraphics[width=12cm]{pictures/saddle_panchromatic_slope.PNG} 
+\caption[Vygenerovanéí sedlo s vrstevnicem po analýze sklonui]{Vygenerované sedlo s vrstevnicemi po analýze sklonu}
+\label{fig:saddle_panchromatic_slope}
 \end{center}
 \end{figure}
 
@@ -466,14 +496,14 @@ $$
 \vspace*{-1cm}
 \subsubsection{Spočinek}
 Tento název označuje část hřbetu vyvýšeniny, kde hřbetnice přechází do mírnějšího sklonu, tj. plocha spočinku je oproti zbytku svahu méně skloněná nebo i vodorovná. tvarová čára se skládá ze dvou křivek -- jedna ohraničuje vbíhající vypuklou plochu, druhá ohraničuje vybíhající plochu. Rozestupy ve směru spádu se nejprve plynuje zvětšují a pak zase změnšují. V aplikaci lze spočinek vygenerovat pod názvem \textbf{Gentle Ridge}. \\
-\indent Algoritmus na tvorbu spočinku je nejsložitější. Rozmezí úhlů, v kterých se generují elipsy je omezeno, tak aby výsledný útvar vytvářel šedesáti-stupňový vějíř. Je náhodně vygenerován vrchol, od kterého se pak vytváří části elips. Polovina elips je tvořena se zvyšujícím se poloměrem, tedy rozestupy vrstevnic se plynuje zvětšují. Další polovina vrstevnic je tvořena se snižujícím se poloměrem, tedy rozestupy ve směru spádu se plynule zmenšují. Počet elips je pevně daný, generování vrcholu a počtu bodů v elipsách je náhodné. Výškové rozdíly mezi jednotlivých elipsami jsou stejné, co se mění je pouze rozestup mezi nimi. Vygenerovaný spočinek je zobrazen na obrázku \ref{fig:spocinek}.
+\indent Algoritmus na tvorbu spočinku je nejsložitější. Rozmezí úhlů, v kterých se generují elipsy je omezeno, tak aby výsledný útvar vytvářel šedesáti-stupňový vějíř. Je náhodně vygenerován vrchol, od kterého se pak vytváří části elips. Polovina elips je tvořena se zvyšujícím se poloměrem, tedy rozestupy vrstevnic se plynuje zvětšují. Další polovina vrstevnic je tvořena se snižujícím se poloměrem, tedy rozestupy ve směru spádu se plynule zmenšují. Počet elips je pevně daný, generování vrcholu a počtu bodů v elipsách je náhodné. Výškové rozdíly mezi jednotlivých elipsami jsou stejné, co se mění je pouze rozestup mezi nimi. Vygenerovaný spočinek je zobrazen na obrázku \ref{fig:gentle_ridge_panchromatic_slope}.
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=13cm]{pictures/spocinek.PNG} 
-\caption[Vygenerovaný spočinek s vrstevnicemi]{Vygenerovaný spočinek s vrstevnicemi}
-\label{fig:spocinek}
+\includegraphics[width=12cm]{pictures/gentle_ridge_colorful_slope.PNG} 
+\caption[Vygenerovaný spočinek s vrstevnicemi po analýze sklonu]{Vygenerovaný spočinek s vrstevnicemi po analýze sklonu}
+\label{fig:gentle_ridge_colorful_slope}
 \end{center}
 \end{figure}
 
@@ -485,7 +515,7 @@ Aby bylo možné dobře demostrovat nejednoznačnost DT, byla naprogramována tv
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=7cm]{pictures/grid_slope.PNG} 
+\includegraphics[width=7cm]{pictures/grid_colorful_slope.PNG} 
 \caption[Vygenerovaná mřížka po analýze sklonu]{Vygenerovaná mřížka po analýze sklonu}
 \label{fig:grid_slope}
 \end{center}
@@ -494,7 +524,7 @@ Aby bylo možné dobře demostrovat nejednoznačnost DT, byla naprogramována tv
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=7cm]{pictures/grid_aspect.PNG} 
+\includegraphics[width=7cm]{pictures/grid_colorful_aspect.PNG} 
 \caption[Vygenerovaná mřížka po analýze expozice]{Vygenerovaná mřížka po analýze expozice}
 \label{fig:grid_aspect}
 \end{center}
@@ -555,44 +585,71 @@ Do této kapitolky je zahrnuto několik ukázek aplikace a výstupů, které lze
 \end{center}
 \end{figure}
 
-Následující ukázky jsou věnovány generátoru terénních tvarů, který se nachází v pravé horní části aplikace. Analýzy sklonu a expozice jsou pravděpodobně nejlépe viditelné na spočinku, jehož obrázky jsou obsahem kapitoly 3.3. Analýza expozice je dobře viditelná na obrázku \ref{fig:hill_aspect}. 
-
-\vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=11cm]{pictures/hill_slope.PNG} 
-\caption[Analýza sklonu nad kupou]{Analýza sklonu nad kupou}
-\label{fig:hill_slope}
+\includegraphics[width=15cm]{pictures/dtm_colorful_aspect.PNG} 
+\caption[Analýza expozice v barevné škále nad body označenými kursorem myši]{Analýza expozice v barevné škále nad body označenými kursorem myši}
+\label{fig:dtm_colorful_aspect}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=15cm]{pictures/dtm_panchromatic_aspect.PNG} 
+\caption[Analýza expozice v panchromatické škále nad body označenými kursorem myši]{Analýza expozice v panchromatické škále nad body označenými kursorem myši}
+\label{fig:dtm_panchromatic_aspect}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=15cm]{pictures/dtm_colorful_slope.PNG} 
+\caption[Analýza sklonu v barevné škále nad body označenými kursorem myši]{Analýza sklonu v barevné škále nad body označenými kursorem myši}
+\label{fig:dtm_colorful_slope}
+\end{center}
+\end{figure}
+
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=15cm]{pictures/dtm_panchromatic_slope.PNG} 
+\caption[Analýza sklonu v panchromatické škále nad body označenými kursorem myši]{Analýza sklonu v panchromatické škále nad body označenými kursorem myši}
+\label{fig:dtm_panchromatic_slope}
 \end{center}
 \end{figure}
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=13cm]{pictures/hill_aspect.PNG} 
-\caption[Analýza expozice nad kupou]{Analýza expozice nad kupou}
-\label{fig:hill_aspect}
-\end{center}
-\end{figure}
-
-\newpage
-Generování DT u sedla je velmi problematické, tudíž i výsledné analýzy sklonu a expozice nejsou pěkné a to zejména u vrcholových a vhloubených částí. Pokud bychom chtěli výsledek vylepšit, bylo by nutné použít lepší mechanismus na vygenerování DT, která v tomto případě vytváří u vrcholových a vhloubených částí velmi malé, v mnoha případech štíhlé trojúhelníky, která špatně aproximují daný tvar. Bylo by vhodné zavést tzv. Constrained Triangulace, které zavádí povinné hrany, jejichž poloha se nesmí měnit.
-
-\vspace{0.2cm}
-\begin{figure}[hbt!] 
-\begin{center}
-\includegraphics[width=11cm]{pictures/saddle_slope.PNG} 
-\caption[Analýza sklonu nad sedlem]{Analýza sklonu nad sedlem}
-\label{fig:saddle_slope}
+\includegraphics[width=13cm]{pictures/hill_colorful_slope.PNG} 
+\caption[Analýza sklonu nad kupou v barevné škále]{Analýza sklonu nad kupou v barevné škále}
+\label{fig:hill_colorful_slope}
 \end{center}
 \end{figure}
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=11cm]{pictures/saddle_aspect.PNG} 
-\caption[Analýza expozice nad sedlem]{Analýza expozice nad sedlem}
-\label{fig:saddle_aspect}
+\includegraphics[width=14cm]{pictures/hill_panchromatic_slope.PNG} 
+\caption[Analýza sklonu nad kupou v panchromatické škále]{Analýza sklonu nad kupou v panchromatické škále}
+\label{fig:hill_panchromatic_slope}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=13cm]{pictures/hill_colorful_aspect.PNG} 
+\caption[Analýza expozice nad kupou v barevné škále]{Analýza expozice nad kupou v barevné škále}
+\label{fig:hill_colorful_aspect}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=14cm]{pictures/hill_panchromatic_aspect.PNG} 
+\caption[Analýza expozice nad kupou v panchromatické škále]{Analýza expozice nad kupou v panchromatické škále}
+\label{fig:hill_panchromatic_aspect}
 \end{center}
 \end{figure}
 
@@ -600,21 +657,74 @@ Generování DT u sedla je velmi problematické, tudíž i výsledné analýzy s
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=11cm]{pictures/valley_slope.PNG} 
-\caption[Analýza sklonu nad údolím]{Analýza sklonu nad údolím}
-\label{fig:valley_slope}
+\includegraphics[width=9cm]{pictures/saddle_colorful_slope.PNG} 
+\caption[Analýza sklonu nad sedlem v barevné škále]{Analýza sklonu nad sedlem v barevné škále}
+\label{fig:saddle_colorful_slope}
 \end{center}
 \end{figure}
 
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=11cm]{pictures/valley_aspect.PNG} 
-\caption[Analýza expozice nad údolím]{Analýza expozice nad údolím}
-\label{fig:valley_aspect}
+\includegraphics[width=9cm]{pictures/saddle_colorful_aspect.PNG} 
+\caption[Analýza expozice nad sedlem v barevné škále]{Analýza expozice nad sedlem v barevné škále}
+\label{fig:saddle_colorful_aspect}
 \end{center}
 \end{figure}
 
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=10cm]{pictures/saddle_panchromatic_aspect.PNG} 
+\caption[Analýza expozice nad sedlem v panchromatické škále]{Analýza expozice nad sedlem v panchromatické škále}
+\label{fig:saddle_panchromatic_aspect}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=11cm]{pictures/valley_colorful_slope.PNG} 
+\caption[Analýza sklonu nad údolím v barevné škále]{Analýza sklonu nad údolím v barevné škále}
+\label{fig:valley_colorful_slope}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=11cm]{pictures/valley_colorful_aspect.PNG} 
+\caption[Analýza expozice nad údolím v barevné škále]{Analýza expozice nad údolím v barevné škále}
+\label{fig:valley_colorful_aspect}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=13cm]{pictures/valley_panchromatic_slope.PNG} 
+\caption[Analýza sklonu nad údolím v panchromatické škále]{Analýza sklonu nad údolím v panchromatické škále}
+\label{fig:valley__panchromatic_slope}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=13cm]{pictures/valley_panchromatic_aspect.PNG} 
+\caption[Analýza expozice nad údolím v panchromatické škále]{Analýza expozice nad údolím v panchromatické škále}
+\label{fig:valley_panchromatic_aspect}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=12cm]{pictures/gentle_ridge_panchromatic_aspect.PNG} 
+\caption[Analýza expozice nad spočinkem v panchromatické škále]{Analýza expozice nad spočinkem v panchromatické škále}
+\label{fig:gentle_ridge_panchromatic_aspect}
+\end{center}
+\end{figure}
 
 %% -------<<< 6. KAPITOLA = Technická dokumentace >>>-------\\%%
 
@@ -642,6 +752,7 @@ Metoda jejíž návratová hodnota je typu double, vrací velikost poloměru kru
 \noindent\textbf{int getNearestpoint(QPoint3D \&p, std::vector\textless QPoint3D\textgreater \&points)}\\
 Tato metoda slouží k nalezení indexu nejbližšího bodu z množiny points k bodu p.\\
 
+\newpage
 \noindent\textbf{int getDelaunayPoint(QPoint3D \&s, QPoint3D \&e, std::vector\textless QPoint3D \textgreater \&points)}\\
 Tato metoda slouží k nalezení indexu bodu, který splňuje Delaunayho vlastnosti.\\
 
@@ -666,24 +777,24 @@ Metoda prochází jednotlivé trojúhelníky Delaunayho triangulace a počítá 
 \newpage
 \vspace*{-1cm}
 \subsubsection{Generator}
-Tato třída obsahuje algoritmy pro automatické generování terénních tvarů.\\
+Tato třída obsahuje algoritmy pro automatické generování terénních tvarů.Vstupem do těchto algoritmů je šířka a výška zobrazovacího widgetu.\\
 
-\noindent\textbf{std::vector\textless QPoint3D\textgreater generateHill()}\\
+\noindent\textbf{std::vector\textless QPoint3D\textgreater generateHill(int width, int height)}\\
 Tvorba kupy.\\
 
-\noindent\textbf{std::vector\textless QPoint3D\textgreater generateValley())}\\
+\noindent\textbf{std::vector\textless QPoint3D\textgreater generateValley(int width, int height))}\\
 Tvorba údolí.\\
 
-\noindent\textbf{std::vector\textless QPoint3D\textgreater generateRidge()}\\
+\noindent\textbf{std::vector\textless QPoint3D\textgreater generateRidge(int width, int height)}\\
 Tvorba hřbetu.\\
 
-\noindent\textbf{std::vector\textless QPoint3D\textgreater generateSaddle())}\\
+\noindent\textbf{std::vector\textless QPoint3D\textgreater generateSaddle(int width, int height))}\\
 Tvorba sedla.\\
 
-\noindent\textbf{std::vector\textless QPoint3D\textgreater generateGentleRidge())}\\
+\noindent\textbf{std::vector\textless QPoint3D\textgreater generateGentleRidge(int width, int height))}\\
 Tvorba spočinku.\\
 
-\noindent\textbf{std::vector\textless QPoint3D\textgreater generateGrid())}\\
+\noindent\textbf{std::vector\textless QPoint3D\textgreater generateGrid(int size))}\\
 Tvorba čtvercového gridu, vstupem je vzdálenost bodů.\\
 
 \subsubsection{Draw}
@@ -850,13 +961,63 @@ V této části se zamyslíme nad slabostmi použitých algoritmů a nad možný
 
 \noindent\textbf{Vykreslení vrstevnic}\\
 \noindent Pro vykreslení vrstevnic byl použit lineární interpolační algoritmus, který předpokládá, že spád mezi dvěma body, mezi nimiž provádíme interpolaci, je konstantní. Tento algoritmus je sice výpočetně jednoduchý, ale nevystihuje realitu. Pro kvalitní výsledek by bylo vhodnější použít geomorfologickou interpolaci, která předpokládá plynulou změnu sklonu terénu mezi jednotlivými body. Tento typ interpolace se však obtížně algoritmizuje, často je tvořena ručně zkušenými kartografy.\\
-\indent Pokud se zaměříme na vrstevnice, pro údolí a hřbet jsou vykresleny korektně. U vrstevnic kupy již dochází k chybám a to zejména blízko vrcholu. Důvodem je, že body jsou na kružnice, kde Delaunayho triangluace není jednoznačná. Vrstevnice mají zvláštní tvar, někdy se dokonce i kříží, případně dvojí. Velmi zle jsou vrstevnice generovány u sedla, kde blízko vrcholů a prohlubní vytváří maličké uzavřené polygonky a dál od nich chybí úplně. Vrstevnice by se měly chovat rovnoměrně, lahodit oku, což v případě sedlového úuvaru rozhodně neplatí.\\
+\indent Pokud se zaměříme na vrstevnice, pro údolí a hřbet jsou vykresleny korektně. U vrstevnic kupy již dochází k chybám a to zejména blízko vrcholu. Důvodem je, že body jsou na kružnici, kde Delaunayho triangluace není jednoznačná. Vrstevnice mají zvláštní tvar, někdy se dokonce i kříží, případně dvojí. Velmi zle jsou vrstevnice generovány u sedla, kde blízko vrcholů a prohlubní vytváří maličké uzavřené polygonky a dál od nich chybí úplně. Vrstevnice by se měly chovat rovnoměrně, lahodit oku, což v případě sedlového útvaru rozhodně neplatí.\\
+\indent Špatně vykreslené vrstevnice jsou zřejmé z následujících obrázků:\\
 
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=10cm]{pictures/saddle_panchromatic_slope_detail.PNG} 
+\caption[Chybné vrstevnice při analýze sklonu nad sedlem]{Chybné vrstevnice při analýze sklonu nad sedlem}
+\label{fig:saddle_panchromatic_slope_detail}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=10cm]{pictures/hill_panchromatic_aspect_detail2.PNG} 
+\caption[Chybné vrstevnice při analýze expozice nad kupou]{Chybné vrstevnice při analýze expozice nad kupou}
+\label{fig:hill_panchromatic_aspect_detail2}
+\end{center}
+\end{figure}
+
+\newpage
 \noindent\textbf{Výpočet a vykreslení sklonu a expozice}\\
-Může vzniknout problém v rovinatém území, jak je patrné z obrázku \ref{fig:hill_slope}. Při výpočtu vznikají zaokrouhlovací chyby, které se promítnou do sklonu a expozice. Proto se terén jeví uživateli jako nerovinný.\\
+Může vzniknout problém v rovinatém území, jak je patrné z obrázku \ref{fig:hill_colorful_slope}. Při výpočtu vznikají zaokrouhlovací chyby, které se promítnou do sklonu a expozice. Proto se terén jeví uživateli jako nerovinný.\\
 \indent Při vykreslení sklonu terénu byly pro ilustraci zvoleny odstíny od zelené po červenou. Sklon nabývá hodnot od 0 do 180 $^\circ$, nicméně reálně jsou hodnoty sklonu o dost nižší, proto byla barevná stupnice volena v intervalu od 1 $^\circ$ do 22 $^\circ$. \\
-\indent Vykreslení expozice bylo rovněž obohaceno o barevnou semi-průhlednou paletu, jež byla také odvozena od palety z aplikace Analýzy výškopisu. Výsledná směrnice byla rozdělena do osmi směrů - S, SV, V, JV, J, JZ, Z, SZ. Rovina uvažována nebyla. Byla snaha o velkou barevnou návaznost, aby byl výsledný obrázek přehledný. Nicméně i přesto by bylo rozhodně vhodné u obou analýz do mapového okna doplnit legendu. \\
-\indent Vyhodnocení sklonu i expozice terénu je stejně jako vykreslení vrstevnic v některých případech velmi nejednoznačné. Pro hřbet i údolí je sklon zobrazen správně. Znázornění spočinku je také správné, je krásně patrné, jak směrem dolů rozestup vrstevnic roste a pak se zase snižuje. Pro kupu je nekorektně vyobrazen střed, neboť v něm nejsou korektně vykresleny Delaunay trojúhelníky. Obdobný problém pak platí u sedla. Expozice pro údolí a hřbet je chybná (viz \ref{fig:valley_aspect}), nastává stejný problém, jako při generování gridu, kdy DT je nejednoznačná. \\
+\indent Vykreslení expozice bylo rovněž obohaceno o barevnou semi-průhlednou paletu, jež byla také odvozena od palety z aplikace Analýzy výškopisu. Výsledná směrnice byla rozdělena do osmi směrů - S, SV, V, JV, J, JZ, Z, SZ. Rovina uvažována nebyla. Byla snaha o velkou barevnou návaznost, aby byl výsledný obrázek přehledný. Nicméně i přesto by bylo rozhodně vhodné u obou analýz do mapového okna doplnit legendu. \\ 
+\indent V aplikaci je možné si vybrat i panchromatickou paletu, nicméně zvláště pro vykreslení expozice není tato paleta vhodná, viz \ref{fig:hill_panchromatic_aspect_detail}. Mezi černou a bílou barvou je nepěkný kontrast, lepší je využít barevnou stupnici, která na sebe ve všech barvách navazuje.\\
+\indent Chybné nebo nedostatečně přesné analýzy jsou zřejmé z následujících obrázků:\\
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=11cm]{pictures/valley_panchromatic_aspect_detail.PNG} 
+\caption[Nejednoznačnost DT ve středové části údolí]{Nejednoznačnost DT ve středové části údolí}
+\label{fig:valley_panchromatic_aspect_detail}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=5cm]{pictures/grid_colorful_slope_detail.PNG} 
+\caption[Nejednoznačnost DT u gridu]{Nejednoznačnost DT u gridu}
+\label{fig:grid_colorful_slope_detail}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=7cm]{pictures/hill_panchromatic_aspect_detail.PNG} 
+\caption[Nevhodná škála při analýze expozice nad kupou]{Nevhodná škála při analýze expozice nad kupou}
+\label{fig:hill_panchromatic_aspect_detail}
+\end{center}
+\end{figure}
+
+\indent Vyhodnocení sklonu i expozice terénu je stejně jako vykreslení vrstevnic v některých případech velmi nejednoznačné. Pro hřbet i údolí je sklon zobrazen správně. Znázornění spočinku je také správné, je krásně patrné, jak směrem dolů rozestup vrstevnic roste a pak se zase snižuje. Pro kupu je nekorektně vyobrazen střed, neboť v něm nejsou korektně vykresleny Delaunay trojúhelníky. Obdobný problém pak platí u sedla. Expozice pro údolí a hřbet je ve středové části chybná (viz obrázek \ref{fig:valley_colorful_aspect}), nastává stejný problém, jako při generování gridu, kdy DT je nejednoznačná. \\
 Co se týče importovaných dat, textové soubory neobsahují mnoho výrazných terénní útvarů, které by mohly ovlivnit výpočty. Vrstevnice, sklon i expozice byly pro importovaná data vykresleny víceméně správně (když vezmeme v úvahu lineární interpolaci, přesnější by byla samozřejmě morfologická). 
 
 \newpage

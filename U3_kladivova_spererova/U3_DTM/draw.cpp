@@ -50,7 +50,7 @@ void Draw::paintEvent(QPaintEvent *event)
             QPoint3D p3 = t.getP3();
 
             if(panchromatic == TRUE){
-                double k = 255.0 / 180;
+                double k = 255.0 / 90;
                 int slope = static_cast<int>(255 - t.getSlope() * k);
 
                 //Set panchromatic color brush
