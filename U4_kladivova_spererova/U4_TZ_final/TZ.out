@@ -1,0 +1,32 @@
+\BOOKMARK [1][-]{section.1}{Popis a rozbor probl\351mu}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{\332daje o bonusov\375ch \372loh\341ch}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Popis pou\236it\375ch algoritmu}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{V\375pocet prusec\355ku obou polygonu A, B}{section.2}% 4
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Slovn\355 z\341pis algoritmu}{subsection.2.1}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Vsunut\355 prusec\355ku do polygonu A, B}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Slovn\355 z\341pis algoritmu}{subsection.2.2}% 7
+\BOOKMARK [2][-]{subsection.2.3}{Ohodnocen\355 vrcholu polygonu A resp. B dle pozice vuci B resp. A}{section.2}% 8
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Slovn\355 z\341pis algoritmu}{subsection.2.3}% 9
+\BOOKMARK [2][-]{subsection.2.4}{V\375ber hran podle pozice}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Slovn\355 z\341pis algoritmu}{subsection.2.4}% 11
+\BOOKMARK [2][-]{subsection.2.5}{Sestaven\355 hran pro zadanou operaci}{section.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.5.1}{Problematick\351 situace a jejich rozbor}{subsection.2.5}% 13
+\BOOKMARK [2][-]{subsection.2.6}{Winding Number Algorithm}{section.2}% 14
+\BOOKMARK [3][-]{subsubsection.2.6.1}{Slovn\355 z\341pis algoritmu}{subsection.2.6}% 15
+\BOOKMARK [3][-]{subsubsection.2.6.2}{V\375sledn\375 algoritmus}{subsection.2.6}% 16
+\BOOKMARK [1][-]{section.3}{Vstupn\355 data}{}% 17
+\BOOKMARK [1][-]{section.4}{V\375stupn\355 data}{}% 18
+\BOOKMARK [1][-]{section.5}{Uk\341zka aplikace}{}% 19
+\BOOKMARK [1][-]{section.6}{Technick\341 dokumentace}{}% 20
+\BOOKMARK [2][-]{subsection.6.1}{Tr\355dy}{section.6}% 21
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Hlavickov\375 soubor Types}{subsection.6.1}% 22
+\BOOKMARK [3][-]{subsubsection.6.1.2}{QPointFB}{subsection.6.1}% 23
+\BOOKMARK [3][-]{subsubsection.6.1.3}{Algorithms}{subsection.6.1}% 24
+\BOOKMARK [3][-]{subsubsection.6.1.4}{Draw}{subsection.6.1}% 25
+\BOOKMARK [3][-]{subsubsection.6.1.5}{Widget}{subsection.6.1}% 26
+\BOOKMARK [3][-]{subsubsection.6.1.6}{Edge}{subsection.6.1}% 27
+\BOOKMARK [1][-]{section.7}{Z\341ver}{}% 28
+\BOOKMARK [1][-]{section.8}{N\341mety na vylep\235en\355}{}% 29
+\BOOKMARK [2][-]{subsection.8.1}{Import polygonu}{section.8}% 30
+\BOOKMARK [2][-]{subsection.8.2}{Oznacen\355 polygonu}{section.8}% 31
+\BOOKMARK [1][-]{subsection.8.2}{Literatura}{}% 32

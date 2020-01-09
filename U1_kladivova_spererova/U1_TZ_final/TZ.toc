@@ -1,1 +1,29 @@
 \babel@toc {czech}{}
+\contentsline {section}{\numberline {1}Popis a rozbor problému}{5}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Údaje o bonusových úlohách}{6}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Popis použitých algoritmů}{6}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Ray Crossing Algorithm}{6}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Slovní zápis algoritmu (varianta s redukcí)}{7}{subsubsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.2}Winding Number Algorithm}{8}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Slovní zápis algoritmu}{9}{subsubsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.3}Generování nekonvexního polygonu}{9}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Slovní zápis algoritmu}{9}{subsubsection.2.3.1}%
+\contentsline {section}{\numberline {3}Problematické situace a jejich rozbor}{11}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Ray Crossing Algorithm}{11}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Winding Number Algorithm}{11}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Vstupní data}{12}{section.4}%
+\contentsline {section}{\numberline {5}Výstupní data}{12}{section.5}%
+\contentsline {section}{\numberline {6}Ukázka aplikace}{13}{section.6}%
+\contentsline {section}{\numberline {7}Technická dokumentace}{17}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Třídy}{17}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Algorithms}{17}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}Draw}{19}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Widget}{20}{subsubsection.7.1.3}%
+\contentsline {subsubsection}{\numberline {7.1.4}sortByX}{21}{subsubsection.7.1.4}%
+\contentsline {subsubsection}{\numberline {7.1.5}sortByY}{21}{subsubsection.7.1.5}%
+\contentsline {subsubsection}{\numberline {7.1.6}sortByAngle}{21}{subsubsection.7.1.6}%
+\contentsline {subsubsection}{\numberline {7.1.7}Angle}{21}{subsubsection.7.1.7}%
+\contentsline {subsection}{\numberline {7.2}Popis bonusových úloh}{22}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Závěr}{23}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Náměty na vylepšení}{23}{subsection.8.1}%
+\contentsline {section}{Literatura}{24}{subsection.8.1}%

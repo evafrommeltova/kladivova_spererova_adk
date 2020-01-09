@@ -1,1 +1,13 @@
 \babel@toc {czech}{}
+\contentsline {figure}{\numberline {1}{\ignorespaces Srovnání konvexního a nekonvexního (konkávního) mnohoúhelníku}}{5}{figure.caption.4}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Princip paprskového algoritmu}}{7}{figure.caption.5}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Princip Winding algoritmu}}{8}{figure.caption.6}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Úspěšné načtení souboru se souřadnicemi polygonů}}{13}{figure.caption.7}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Analýza Ray Crossing pro bod uvnitř polygonu}}{13}{figure.caption.8}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Analýza Ray Crossing pro bod na hraně polygonu}}{14}{figure.caption.9}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Analýza Ray Crossing pro bod ve vrcholu polygonu}}{14}{figure.caption.10}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Analýza Winding pro bod uvnitř polygonu}}{15}{figure.caption.11}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Analýza Winding pro bod ve vrcholu polygonu}}{15}{figure.caption.12}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Analýza Winding nad vygenerovaným polygonem}}{16}{figure.caption.13}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Automaticky generovaný nekonvexní polygon s 50 vrcholy}}{16}{figure.caption.14}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Analýza manuálně a automaticky nakreslených polygonů}}{17}{figure.caption.15}%

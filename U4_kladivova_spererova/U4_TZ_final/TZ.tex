@@ -271,12 +271,16 @@ V této části jsou vybírány hrany, které mají vůči zadanému polygonu ur
 \subsection{Sestavení hran pro zadanou operaci}
 Pokud je vybrána operace UNION, jsou vybrány vnější hrany k polygonu A (OUTER) a vnější hrany z polygonu B.
 Pokud je vybrána operace INTERSECT, jsou vybrány vnitřní hrany k polygonu A (INNER) a vnitřní hrany z polygonu B.
-Pokud je vybrána operace DIFFERENCEAB, jsou vybrány vnější hrany k polygonu A a vnitřní hrany z polygonu B.
-Pokud je vybrána operace DIFFERENCEBA, jsou vybrány vnější hrany k polygonu B a vnitřní hrany z polygonu A.
+Pokud je vybrána operace DIFFERENCEAB, jsou vybrány vnější hrany k polygonu A a vnitřní hrany z polygonu B a kolineární segmenty polygonu A.
+Pokud je vybrána operace DIFFERENCEBA, jsou vybrány vnější hrany k polygonu B a vnitřní hrany z polygonu A a kolineární segmenty polygonu B.
 
 \subsubsection{Problematické situace a jejich rozbor}
- Pokud je středový bod přímo na hraně polygonu, tedy nelze rozhodnout, zda je bod uvnitř nebo mimo polygon, je pozice bodu ON. Body, které mají tuto pozici jsou vybrány všechny jak k polygonu A, tak k polygonu B. Tím byly u operace INTERSECT ošetřeny případy D, E, F, viz obrázek \ref{fig:problem}. U případů A, B, C, kdy je průsečíkem bod, nebylo vyznačení bodu uvažováno, jelikož výsledek má vždy charakter vektoru hran. U případů D, E, F u operace sjednocení, je společná hrana označena červeně, jelikož patří do sjednocení.
+Pokud je středový bod přímo na hraně polygonu, tedy nelze rozhodnout, zda je bod uvnitř nebo mimo polygon, je pozice bodu ON. To samé platí pro hrany. Pozice hrany, která není uvnitř ani mimo polygon, je rovněž ON. V obou těchto zmíněných případů jsou výsledkem operací průnik a sjednocení méně než tři segmenty. Pokud je výstupem množina definovaná méně než třemi segmenty, výstupem je potom prázdná množina. \\
+\indent U případů D, E, F u operací průnik i sjednocení nebyly tedy zahrnuty kolineární segmenty. Důležité je si uvědomit, že tyto kolineární hrany se nenacházejí uvnitř množiny, ale pouze na její hranici. U operace union byly zahrnuty pouze vnější segmenty, zatímco u operace intersect pouze ty vnitřní. \\
+\indent U průsečíků A, B, C, kde se nachází kolineární segment v podobě jednoho nebo více bodů rovněž nebyly kolineární segmenty uvažovány. U operací rozdíl kolineární segmenty zahrnuty byly, a to u operace A-B kolineární segment k polygonu A, a u operace B-A kolineární segment k polygonu B. 
 
+\newpage
+\vspace*{-1cm}
 \subsection{Winding Number Algorithm}
 \large
 \noindent Tento algoritmus byl využit ve funkci setPosition při zjišťování pozice středu úsečky polygonu A vůči polygonu B a naopak.
@@ -506,7 +510,7 @@ Dále může nastat případ, kdy se hrana jednoho polygonu přesně shoduje s h
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=10cm]{pictures/D_union.png} 
+\includegraphics[width=10cm]{pictures/D_union_v2.png} 
 \caption[Situace D - hrana obou polygonů se shoduje - sjednocení]{Situace D - hrana obou polygonů se shoduje - sjednocení}
 \label{fig:D_union}
 \end{center}
@@ -515,7 +519,7 @@ Dále může nastat případ, kdy se hrana jednoho polygonu přesně shoduje s h
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=10cm]{pictures/D_intersect.png} 
+\includegraphics[width=10cm]{pictures/D_intersect_v2.png} 
 \caption[Situace D - hrana obou polygonů se shoduje - průnik]{Situace D - hrana obou polygonů se shoduje - průnik}
 \label{fig:D_intersect}
 \end{center}
@@ -533,7 +537,7 @@ Dále může nastat případ, kdy se hrana jednoho polygonu přesně shoduje s h
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=15cm]{pictures/D_diffBA.png} 
+\includegraphics[width=10cm]{pictures/D_diffBA.png} 
 \caption[Situace D - hrana obou polygonů se shoduje - rozdíl B-A]{Situace D - hrana obou polygonů se shoduje - rozdíl B-A}
 \label{fig:D_diffBA}
 \end{center}
@@ -544,7 +548,7 @@ Dalšími singulárními případy je společná část hrany [E] nebo hrana le�
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=15cm]{pictures/E_union.png} 
+\includegraphics[width=10cm]{pictures/E_union_v2.png} 
 \caption[Situace E - společná část hrany - sjednocení]{Situace E - společná část hrany - sjednocení}
 \label{fig:E_union}
 \end{center}
@@ -553,7 +557,7 @@ Dalšími singulárními případy je společná část hrany [E] nebo hrana le�
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=10cm]{pictures/E_intersect.png} 
+\includegraphics[width=9cm]{pictures/E_intersect_v2.png} 
 \caption[Situace E - společná část hrany - průnik]{Situace E - společná část hrany - průnik}
 \label{fig:E_intersect}
 \end{center}
@@ -562,9 +566,18 @@ Dalšími singulárními případy je společná část hrany [E] nebo hrana le�
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=10cm]{pictures/E_more_intersect.png} 
+\includegraphics[width=10cm]{pictures/E_more_intersect_v2.png} 
 \caption[Situace E - společná část více hran - průnik]{Situace E - společná část více hran - průnik}
 \label{fig:E_more_intersect}
+\end{center}
+\end{figure}
+
+\vspace{0.2cm}
+\begin{figure}[hbt!] 
+\begin{center}
+\includegraphics[width=10cm]{pictures/E_more_union_v2.png} 
+\caption[Situace E - společná část více hran - sjednocení]{Situace E - společná část více hran - sjednocení}
+\label{fig:E_more_union}
 \end{center}
 \end{figure}
 
@@ -589,7 +602,7 @@ Dalšími singulárními případy je společná část hrany [E] nebo hrana le�
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=10cm]{pictures/F_union.png} 
+\includegraphics[width=10cm]{pictures/F_union_v2.png} 
 \caption[Situace F - hrana ležící v hraně druhého polygonu - sjednocení]{Situace F - hrana ležící v hraně druhého polygonu - sjednocení}
 \label{fig:F_union}
 \end{center}
@@ -598,7 +611,7 @@ Dalšími singulárními případy je společná část hrany [E] nebo hrana le�
 \vspace{0.2cm}
 \begin{figure}[hbt!] 
 \begin{center}
-\includegraphics[width=9cm]{pictures/F_intersect.png} 
+\includegraphics[width=9cm]{pictures/F_intersect_v2.png} 
 \caption[Situace F - hrana ležící v hraně druhého polygonu - průnik]{Situace F - hrana ležící v hraně druhého polygonu - průnik}
 \label{fig:F_intersect}
 \end{center}
@@ -629,8 +642,6 @@ V tomto hlavičkovém souboru je definováno několik výčtových typů. \\
 \noindent Čtvrtým je typ definující polohu bodu vůči přímce. Je použit ve funkci \textit{get2LinesPosition}, která je použita ve funkci \textit{computePolygonIntersection}. Tento tyo je tedy důležitý při výpočtu průsečíků obou polygonů.\\
 \noindent\textbf{ typedef enum \{Parallel, Identical, NonIntersected, Intersected\} T2LinePosition}
 
-\newpage
-\vspace*{-1cm}
 \subsubsection{QPointFB}
 Tato třída dědí od třídy PointF. Konstruktor se skládá ze souřadnic x,y, které jsou odvozeny od rodičovské třídy QPointF. Navíc jsou v konstruktoru inicializovány hodnoty $\alpha$ a $\beta$ a pozice bodu vůči polygonu.
 \noindent Konstruktor má tvar:\\
@@ -644,6 +655,8 @@ Tato třída dědí od třídy PointF. Konstruktor se skládá ze souřadnic x,y
 \noindent\textbf{double getBeta()}\\
 \noindent\textbf{TPointPolygonPosition getPosition ()}
 
+\newpage
+\vspace*{-1cm}
 \subsubsection{Algorithms}
 Třída Algorithms obsahuje konstruktor a metody, které jsou určeny pro výpočet algoritmů používaných v digitálním GIS. Datové typy u bodu a polygonu byly zvoleny s plovoucí desetinnou čárkou (floating point).\\
 
@@ -665,11 +678,11 @@ Určí pozici dvou přímek vůči sobě. Pokud najde průsečík, uloží jej d
 \noindent\textbf{void processIntersection(QPointFB \&pi, double \&t, std::vector$<QPointFB>$ \&polygon, int \&i)}\\
 Tato funkce je volána ve funkci \textit{computePolygonIntersection} a zpracovává nalezený průsečík, který má určité parametry alfa a beta a také svůj index. Podle toho se určí, na jaké místo v polygonu má být vložen.\\
 
-\newpage
-\vspace*{-1cm}
 \noindent\textbf{std::vector$<Edge>$ booleanOperations(std::vector$<QPointFB>$ \&polygonA,  std::vector$<QPointFB>$ \&polygonB, TBooleanOperation operation)}\\
 Vrátí výsledné hrany podle požadované operace. Nejprve vrátí průsečíky obou polygonů a vloží je na své místo do polygonů (funkce \textit{computePolygonIntersection}). Poté vypočte pozici polygonu A vůči polygonu B a naopak. Pokud je vybrána operace UNION, jsou vybrány vnější hrany k polygonu A (OUTER) a vnější hrany z polygonu B pomocí funkce \textit{selectEdges}. Pokud je vybrána operace INTERSECT, jsou vybrány vnitřní hrany k polygonu A (INNER) a vnitřní hrany z polygonu B. Pokud je vybrána operace DIFFERENCEAB, jsou vybrány vnější hrany k polygonu A a vnitřní hrany z polygonu B. Pokud je vybrána operace DIFFERENCEBA, jsou vybrány vnější hrany k polygonu B a vnitřní hrany z polygonu A.  Pokud je středový bod přímo na hraně polygonu, nelze rozhodnout, zda je bod uvnitř nebo mimo polygon, pozice bodu ON. Body, které mají tuto pozici jsou vybrány všechny jak k polygonu A, tak k polygonu B.\\
 
+\newpage
+\vspace*{-1cm}
 \noindent\textbf{void computePolygonIntersection(std::vector$<QPointFB>$ \&polygonA, std::vector$<QPointFB>$ \&polygonB)}\\
 Tato funkce hledá průsečíky pomocí funkce \textit{get2LinesPosition} a pokud najde, uloží průsečík do mapy - klíčem je parametr alfa nebo beta a hodnotou je daný průsečík. Dále nalezený průsečík zpracuje pomocí funkce \textit{processIntersection}.\\
 
@@ -679,11 +692,11 @@ Po výpočtu průsečíků je třeba nastavit pozici hran vůči polygonům. Poz
 \noindent\textbf{void setPositionsAB(std::vector$<QPointFB>$ \&polygonA, std::vector$<QPointFB>$ \&polygonB)}\\
 Volá funkci \textit{setPositions} nejprve s polygony v pořadí A, B a poté s polygony v pořadí B, A.\\
 
-\newpage
-\vspace*{-1cm}
 \noindent\textbf{void selectEdges(std::vector$<QPointFB>$ \&pol, TPointPolygonPosition position, std::vector$<Edges>$ \&edges)}\\
 Vybírá hrany, jejichž počáteční bod má zadanou pozici, kterou pro konkrétní množinovou operaci hledáme.
 
+\newpage
+\vspace*{-1cm}
 \subsubsection{Draw}
 Třída Draw dědí od třídy QWidget. Je v ní obsaženo několik metod a také kontruktor, který nastavuje počáteční kursor mimo kreslící okno.\\
 
@@ -707,11 +720,11 @@ Tato metoda slouží k vykreslení obou polygonů a k vykreslení hran, které b
 \noindent\textbf{void drawPolygon(QPainter \&painter, std::vector$<QPointFB>$ polygon)}\\
 Tato metoda vytváří polygon z definovaných bodů a pak ho vykreslí.\\
 
-\newpage
-\vspace*{-1cm}
 \noindent\textbf{void clearResult}\\
 Metoda sloužící k vymazání výsledku množinové operace zobrazené červeně a k překreslení.  \\
 
+\newpage
+\vspace*{-1cm}
 \noindent\textbf{void clearAll}\\
 Metoda sloužící k vymazání obsahu zobrazovacího okna. Volá se před importem bodů.\\
 
@@ -760,15 +773,12 @@ Tato třída vytváří hranu se startovním a koncovým bodem.
 \noindent
 \large
 Výsledná aplikace má několik funkcionalit. Umí importovat textový soubor se souřadnicemi dvou polygonů, nebo tyto polygony ručně naklikat v obrazovém okně. Následně je možné zobrazit výsledek vybrané množinové operace. V comboboxu si můžeme vybrat z následujících množinových operací: průnik, sjednocení, rozdíl A-B a rozdíl B-A. Výsledné hrany patřící do výsledku jsou zvýrazněny červenou barvou. \\
-V aplikaci bylo zapotřebí ošetřit případy, kdy výsledkem je linie nebo bod. Tyto případy byly testovány skrze speciální textové soubory, na kterých si může uživatel sám vyzkoušet funkčnost aplikace. Pokud je výsledkem linie - je vyznačena, bohužel pokud je výsledkem pouze bod (případy A, B, C na obrázku \ref{fig:problem}) průnik v bodě není zřetelně vyznačen. Tato skutečnost může být pro uživatele matoucí. 
+V aplikaci bylo zapotřebí ošetřit případy, kdy vznikají kolineární segmenty. Tyto případy byly testovány skrze speciální textové soubory, na kterých si může uživatel sám vyzkoušet funkčnost aplikace. Ve výsledku průniku jsou zahrnuty pouze vnitřní hrany, podobně ve výsledku sjednocení jsou zahrnuty pouze vnější hrany. Kolineární segmenty zahrnuty nejsou. To souvisí s tím, že hrana se nenachází uvnitř polygonu, ale pouze na jeho hranici. To znamená, že u operací průnik a sjednocení nejsou společné body ani hrany vyznačeny. U operace rozdílu A-B jsou vyznačeny singulární hrany u polygonu A, u operace rozdílu B-A jsou vyznačeny singulární hrany u polygonu B.
 
 \section{Náměty na vylepšení}
 
 \subsection{Import polygonů}
 Načítání polygonů ze souboru by mohlo být oddělené. Uživatel by načetl polygony ze dvou různých textových souborů a přitom by si zvolil, do kterého polygonu chce daný polygon uložit (A/B).
-
-\subsection{Zvýraznění 0D výsledku (bod)}
-Bylo by vhodné ošetřit, že v případě, že výsledkem je 0D entita (bod), tak bude graficky lépe zvýrazněn, aby byl uživateli na první pohled výsledek zřejmý.
 
 \subsection{Označení polygonu}
 Aby byla aplikace přehlednější, bylo by vhodné polygony popsat, aby bylo jasné, zda se jedná o polygon A nebo B. V případě, že je zvolena množinová operace rozdílu, nemusí být na první pohled jasné, od kterého polygonu se který odečítá.
